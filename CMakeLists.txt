@@ -1,17 +1,15 @@
 ############################################################################
-#  CMakeLists.txt
-#
-#  Base CMake file for building stxxl with different options.
-#
-#  Part of the STXXL. See http://stxxl.sourceforge.net
-#
-#  Copyright (C) 2013-2014 Timo Bingmann <tb@panthema.net>
-#
-#  Distributed under the Boost Software License, Version 1.0.
-#  (See accompanying file LICENSE_1_0.txt or copy at
-#  http://www.boost.org/LICENSE_1_0.txt)
+# For use in the SpectralSignalHound-Viewer project
+# 
+# Copyright (c) 2014, Nick Potts
+# All rights reserved.
+# 
+#  This Source Code Form is subject to the terms of the 
+#  Mozilla Public License, v. 2.0. If a copy of the MPL 
+#  was not distributed with this file, You can obtain 
+#  one at http://mozilla.org/MPL/2.0/.
+# 
 ############################################################################
-
 
 cmake_minimum_required(VERSION 2.8.11)
 
@@ -47,7 +45,6 @@ find_package(Qt5Sql REQUIRED)
 
 # Tell CMake to create the executable
 add_executable(ssh-viewer sources/SHData.cpp  sources/SHData.h)
-
 
 
 qt5_use_modules(ssh-viewer Widgets Sql Core)
