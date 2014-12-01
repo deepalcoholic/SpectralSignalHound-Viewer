@@ -9,19 +9,25 @@
 */
 
 
+#include <limits> //for error values
+#include <vector>
+#include <algorithm>
 #include <stxxl/vector>
 #include <stxxl/random>
 #include <stxxl/sort>
-#include <vector>
-#include <algorithm>
-#include <QDateTime>
+#include <QDebug>
 #include <QFile>
 #include <QtSql>
-#include <QDebug>
-#include <qwt_raster_data.h>
+#include <QDateTime>
+#include <qwt_raster_data.h> //QWT data type
 
 
-typedef stxxl::VECTOR_GENERATOR<double>::result vdouble;
+
+
+typedef stxxl::VECTOR_GENERATOR<double>::result stxxl_vdouble;
+typedef std::vector<double> vdouble;
+
+bool mygreater (double i, double j);
 
 class QHoundData: public QwtRasterData {
   public:
@@ -30,15 +36,15 @@ class QHoundData: public QwtRasterData {
     bool openSQL(QString);
     bool setTable(QString);
     QStringList tables();
+    double lvalue( double x, double y );
     virtual double value( double x, double y ) const;
   private:
     QSqlDatabase db;
-    QStringList sqlTables;
     QString currentTable;
 
     int single_sweep_length;
-    vdouble sweep_data;
-    std::vector<double> freqs;
-    std::vector<double> temperatures;
-    std::vector<double> timestamps;
+    stxxl_vdouble sweep_data;
+    vdouble freqs;
+    vdouble temperatures;
+    vdouble timestamps;
 };
