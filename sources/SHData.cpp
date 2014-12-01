@@ -41,13 +41,6 @@ bool QHoundData::openCSV(QString csvfilename) {
 		for(int i=2;  i < row.size(); i++)
 			sweep_data.push_back( row.at(i).toDouble() );
 	}
-	// qDebug() << "CSV Parameters";
-	// qDebug() << "Time #0 " << qSetRealNumberPrecision(15) << timestamps.at(0);
-	// qDebug() << "Time #1 " << qSetRealNumberPrecision(15) << timestamps.at(1);
-	// qDebug() << "Time #2 " << qSetRealNumberPrecision(15) << timestamps.at(2);
-	// qDebug() << "# Freqs" << freqs.size();
-	// qDebug() << "# Temperatures" << temperatures.size();
-	// qDebug() << "# Timestamps" << timestamps.size();
 	if (sweep_data.size() > 0 ) return true;
 	return false;
 }
@@ -94,14 +87,6 @@ bool QHoundData::setTable(QString newTable) {
 			sweep_data.push_back(i.toDouble());
 		}
 	}
-	// qDebug() << sweep_data[0];
-	// qDebug() << "DB Parameters";
-	// qDebug() << "Time #0 " << qSetRealNumberPrecision(15) << timestamps.at(0);
-	// qDebug() << "Time #1 " << qSetRealNumberPrecision(15) << timestamps.at(1);
-	// qDebug() << "Time #2 " << qSetRealNumberPrecision(15) << timestamps.at(2);
-	// qDebug() << "# Freqs" << freqs.size();
-	// qDebug() << "# Temperatures" << temperatures.size();
-	// qDebug() << "# Timestamps" << timestamps.size();
 	return !sweep_data.empty();
 }
 QStringList QHoundData::tables(void) {
@@ -126,7 +111,7 @@ int QHoundData::closest(vdouble haystack, double needle) {
 	//first check if we are even in bounds again (first and second at end=over bounds, second at beginning = under bounds)
 	if ( (loc.first == haystack.begin() && loc.second == haystack.begin()) | (loc.first == haystack.end() && loc.second == haystack.end()) )
 		return -1;
-	// if both are pointing ot the smae value, we must be missing one.  Back up so we can compare values
+	// if both are pointing to the smae value, we must be missing one.  Back up so we can compare values
 	if (loc.first == loc.second)
 		std::advance(loc.first, -1);
 
