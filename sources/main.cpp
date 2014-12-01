@@ -15,22 +15,20 @@
  	QHoundData data;
 
  	/* CSV tests*/
- 	bool ok = data.openCSV("test.csv");
- 	std::cout << "openCSV: " << (ok ? "Ok": "Fail") << std::endl;
- 	std::cout << "1417406248.762, 399999783.0 " << data.lvalue(1417406248.762, 399999783.0) << " s/b -83.5439" << std::endl; //top left point
- 	std::cout << "1417406248.762, 406000216.0 " << data.lvalue(1417406248.762, 406000216.0) << " s/b -92.3722" << std::endl;//top right
- 	std::cout << "1417406252.373, 399999783.0 " << data.lvalue(1417406252.373, 399999783.0) << " s/b -86.8954" << std::endl;//bottom left
- 	std::cout << "1417406252.373, 406000216.0 " << data.lvalue(1417406252.373, 406000216.0) << " s/b -84.871" << std::endl;//bottom right
+ 	std::cout << "openCSV: " << (data.openCSV("test.csv") ? "Ok": "Fail") << std::endl;
+ 	std::cout << "1417406248.8, 399999783.0 " << data.lvalue(1417406248.8, 399999783.0) << " s/b -83.5439" << std::endl; //top left point
+ 	std::cout << "1417406248.8, 406000216.0 " << data.lvalue(1417406248.8, 406000216.0) << " s/b -92.3722" << std::endl;//top right
+ 	std::cout << "1417406252.3, 399999783.0 " << data.lvalue(1417406252.3, 399999783.0) << " s/b -86.8954" << std::endl;//bottom left
+ 	std::cout << "1417406252.3, 406000216.0 " << data.lvalue(1417406252.3, 406000216.0) << " s/b -84.871" << std::endl;//bottom right
  	
 
  	//SQL tests
- 	bool qok = data.openSQL("test.db");
- 	qDebug() << "Opened SQL database: " << qok;
- 	qDebug() << data.tables();
- 	data.setTable("fast_20141130L205728");
- 	std::cout << "1417406248.762, 399999783.0 " << data.lvalue(1417406248.762, 399999783.0) << " s/b -83.5439" << std::endl; //top left point
- 	std::cout << "1417406248.762, 406000216.0 " << data.lvalue(1417406248.762, 406000216.0) << " s/b -92.3722" << std::endl;//top right
- 	std::cout << "1417406252.373, 399999783.0 " << data.lvalue(1417406252.373, 399999783.0) << " s/b -86.8954" << std::endl;//bottom left
- 	std::cout << "1417406252.373, 406000216.0 " << data.lvalue(1417406252.373, 406000216.0) << " s/b -84.871" << std::endl;//bottom right
+ 	qDebug() << "Opened SQL database: " << (data.openSQL("test.db") ? "Ok": "Fail");
+ 	qDebug() << "Available Tables" << data.tables();
+ 	qDebug() << "Setting Table to fast_20141130L205728: " << (data.setTable("fast_20141130L205728") ? "Ok": "Fail");
+ 	std::cout << "1417406248.8, 399999783.0 " << data.lvalue(1417406248.8, 399999783.0) << " s/b -83.5439" << std::endl; //top left point
+ 	std::cout << "1417406248.8, 406000216.0 " << data.lvalue(1417406248.8, 406000216.0) << " s/b -92.3722" << std::endl;//top right
+ 	std::cout << "1417406252.3, 399999783.0 " << data.lvalue(1417406252.3, 399999783.0) << " s/b -86.8954" << std::endl;//bottom left
+ 	std::cout << "1417406252.3, 406000216.0 " << data.lvalue(1417406252.3, 406000216.0) << " s/b -84.871" << std::endl;//bottom right
  	
  }

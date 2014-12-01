@@ -10,6 +10,7 @@
 
 
 #include <limits> //for error values
+#include <iterator> //for std::distance
 #include <vector>
 #include <algorithm>
 #include <stxxl/vector>
@@ -39,6 +40,7 @@ class QHoundData: public QwtRasterData {
     double lvalue( double x, double y );
     virtual double value( double x, double y ) const;
   private:
+    int closest(vdouble, double);
     QSqlDatabase db;
     QString currentTable;
 
