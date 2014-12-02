@@ -28,8 +28,6 @@
 typedef stxxl::VECTOR_GENERATOR<double>::result stxxl_vdouble;
 typedef std::vector<double> vdouble;
 
-bool mygreater (double i, double j);
-
 class QHoundData: public QwtRasterData {
   public:
     explicit QHoundData();

@@ -10,8 +10,6 @@
 
 #include "SHData.h"
 
-bool mygreater (double i, double j) { return (i>j); }
-
 QHoundData::QHoundData() {
 	db = QSqlDatabase::addDatabase("QSQLITE", "SHData");
 }
