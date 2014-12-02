@@ -11,7 +11,8 @@
  #include "SHData.h"
 
  int main(int c, char **v) {
- 	v[c--];
+ 	if (v[c--] == "")
+ 		c++;
  	QHoundData data;
 
  	/* CSV tests*/

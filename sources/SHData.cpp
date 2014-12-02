@@ -14,10 +14,11 @@ bool mygreater (double i, double j) { return (i>j); }
 
 QHoundData::QHoundData() {
 	db = QSqlDatabase::addDatabase("QSQLITE", "SHData");
-	//TODO MOVE THESE ELSEWHERE
-	setInterval( Qt::XAxis, QwtInterval( 0, 1 ) );
-    setInterval( Qt::YAxis, QwtInterval( 1, 2 ) );
-    setInterval( Qt::ZAxis, QwtInterval( -150, 10 ) );
+}
+void QHoundData::setupMaxMin() {
+	setInterval( Qt::XAxis, QwtInterval( timestamps.front(), timestamps.back() ) );
+    setInterval( Qt::YAxis, QwtInterval( freqs.front(), freqs.back() ) );
+    setInterval( Qt::ZAxis, QwtInterval( -150, 15 ) );
 }
 bool QHoundData::openCSV(QString csvfilename) {
 	db.close();
@@ -42,6 +43,7 @@ bool QHoundData::openCSV(QString csvfilename) {
 			sweep_data.push_back( row.at(i).toDouble() );
 	}
 	if (sweep_data.size() > 0 ) return true;
+	setupMaxMin();
 	return false;
 }
 bool QHoundData::openSQL(QString sqlfilename) {
@@ -86,6 +88,7 @@ bool QHoundData::setTable(QString newTable) {
 		foreach(QString i, row)
 			sweep_data.push_back(i.toDouble());
 	}
+	setupMaxMin();
 	return !sweep_data.empty();
 }
 QStringList QHoundData::tables(void) {

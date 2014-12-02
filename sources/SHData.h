@@ -41,6 +41,7 @@ class QHoundData: public QwtRasterData {
     virtual double value( double x, double y ) const;
   private:
     int closest(vdouble, double) const;
+    void setupMaxMin();
     QSqlDatabase db;
     QString currentTable;
 
