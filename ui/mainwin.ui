@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>mainwin</class>
+ <widget class="QMainWindow" name="mainwin">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -15,26 +15,39 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+    <item row="1" column="3">
+     <widget class="QToolButton" name="nextTime">
+      <property name="text">
+       <string>...</string>
+      </property>
+      <property name="arrowType">
+       <enum>Qt::RightArrow</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QSlider" name="timeIndex">
+      <property name="sliderPosition">
+       <number>7</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="4">
+     <widget class="QLabel" name="timestamp">
+      <property name="text">
+       <string>2014-11-12 09:23:21.232</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" colspan="5">
      <widget class="QGroupBox" name="groupBox">
       <property name="title">
        <string>Data Limits</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="1" column="2">
-        <widget class="QDateTimeEdit" name="dateTimeEdit_2">
-         <property name="displayFormat">
-          <string>yyyy-MM-dd hh:mm.zzz</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Max Time</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="2">
         <widget class="QDateTimeEdit" name="dateTimeEdit">
          <property name="displayFormat">
@@ -42,37 +55,10 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="3">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>Min Freq</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>Max Frequency</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Min Time</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="4">
-        <widget class="QDoubleSpinBox" name="max_freq_2">
-         <property name="suffix">
-          <string> Hz</string>
-         </property>
-         <property name="minimum">
-          <double>1.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>440000000.000000000000000</double>
+       <item row="1" column="2">
+        <widget class="QDateTimeEdit" name="dateTimeEdit_2">
+         <property name="displayFormat">
+          <string>yyyy-MM-dd hh:mm.zzz</string>
          </property>
         </widget>
        </item>
@@ -89,21 +75,62 @@
          </property>
         </widget>
        </item>
+       <item row="1" column="4">
+        <widget class="QDoubleSpinBox" name="max_freq_2">
+         <property name="suffix">
+          <string> Hz</string>
+         </property>
+         <property name="minimum">
+          <double>1.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>440000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Max Frequency</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Min Freq</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Max Time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Min Time</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
-    <item row="1" column="0">
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
+    <item row="1" column="1">
+     <widget class="QToolButton" name="prevTime">
+      <property name="text">
+       <string>...</string>
       </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
+      <property name="arrowType">
+       <enum>Qt::LeftArrow</enum>
       </property>
-     </spacer>
+     </widget>
+    </item>
+    <item row="2" column="1" colspan="4">
+     <widget class="QWidget" name="widget" native="true"/>
     </item>
    </layout>
   </widget>
