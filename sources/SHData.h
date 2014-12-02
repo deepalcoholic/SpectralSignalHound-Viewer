@@ -37,10 +37,10 @@ class QHoundData: public QwtRasterData {
     bool openSQL(QString);
     bool setTable(QString);
     QStringList tables();
-    double lvalue( double x, double y );
+    //double lvalue( double x, double y ) const;
     virtual double value( double x, double y ) const;
   private:
-    int closest(vdouble, double);
+    int closest(vdouble, double) const;
     QSqlDatabase db;
     QString currentTable;
 

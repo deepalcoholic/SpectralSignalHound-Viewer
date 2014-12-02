@@ -83,9 +83,8 @@ bool QHoundData::setTable(QString newTable) {
 		if (row.size() != single_sweep_length) continue; //extra parameters or missing values.
 		timestamps.push_back( QDateTime::fromString(query.value(0).toString().left(23), "yyyy-MM-dd HH:mm:ss.zzz").toMSecsSinceEpoch() / 1000.0);
 		temperatures.push_back( query.value(1).toDouble());
-		foreach(QString i, row) {
+		foreach(QString i, row)
 			sweep_data.push_back(i.toDouble());
-		}
 	}
 	return !sweep_data.empty();
 }
@@ -100,17 +99,15 @@ QStringList QHoundData::tables(void) {
 			rtn << query.value(0).toString();
 	return rtn;
 }
-double QHoundData::value(double time, double freq ) const {
-	return time+freq;
-}
-int QHoundData::closest(vdouble haystack, double needle) {
+int QHoundData::closest(vdouble haystack, double needle) const {
 	/**Seaches for needle in haystack.  Returns the index to the closest needle in haystack*/
-	//finds upper and lower bounds
 	int index = -1;
+	//finds upper and lower bounds
 	std::pair<vdouble::iterator, vdouble::iterator> loc = std::equal_range(haystack.begin(), haystack.end(), needle);
 	//first check if we are even in bounds again (first and second at end=over bounds, second at beginning = under bounds)
 	if ( (loc.first == haystack.begin() && loc.second == haystack.begin()) | (loc.first == haystack.end() && loc.second == haystack.end()) )
 		return -1;
+
 	// if both are pointing to the smae value, we must be missing one.  Back up so we can compare values
 	if (loc.first == loc.second)
 		std::advance(loc.first, -1);
@@ -118,29 +115,22 @@ int QHoundData::closest(vdouble haystack, double needle) {
 	if (loc.second == haystack.end()) //exact hit.
 		index = std::distance(haystack.begin(), loc.first);
 	else //value is somewhere between loc.first and second.  See which value is closer
-		index = std::distance(haystack.begin(), 
-			(needle - *loc.first) > (*loc.second - needle) ? loc.second : loc.first);
+		index = std::distance(haystack.begin(), (needle - *loc.first) > (*loc.second - needle) ? loc.second : loc.first);
 	//qDebug() << "\tAsked for" << qSetRealNumberPrecision(15) << needle << "Lower Bound=" << qSetRealNumberPrecision(15) << *loc.first << " Upper Bound=" << qSetRealNumberPrecision(15) << *loc.second << " Index=" << index;
 	return index;
 }
-double QHoundData::lvalue(double time, double freq ) {
+double QHoundData::value(double time, double freq ) const {
 	/** Use time and freq to lookup the offsets from the large linear array stored in the stxxl vector*/
 	int sweep_index, freq_index;
-	
 
 	//make sure we have populated the data arrays
-	if ( (timestamps.size() == 0) | (sweep_data.size() == 0) | (freqs.size() == 0)) {
-		qDebug() << __FILE__ << ":" <<  __LINE__ << " Arrays are of invalid size";
-		return -std::numeric_limits<double>::max();
-	}
+	if ( (timestamps.size() == 0) | (sweep_data.size() == 0) | (freqs.size() == 0)) return -std::numeric_limits<double>::max();
 
 	sweep_index = closest(timestamps, time);
-	if (sweep_index == -1)
-		return -std::numeric_limits<double>::max();
+	if (sweep_index == -1) return -std::numeric_limits<double>::max();
 
 	freq_index = closest(freqs, freq);
-	if (freq_index == -1)
-		return -std::numeric_limits<double>::max();
+	if (freq_index == -1) return -std::numeric_limits<double>::max();
 
 	return sweep_data[sweep_index*single_sweep_length + freq_index];
 }
