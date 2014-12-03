@@ -10,17 +10,33 @@ $Id: doer-demod-display.cpp 815 2014-10-27 19:20:22Z npotts $
 #include "SweepInspector.h"
 
 SweepInspector::~SweepInspector() {
-    /** destroy stuffs  */
+  /** destroy stuffs  */
+  delete(d_curve);
+  delete(canvas);
+  delete(zoomer);
+  delete(panner);
 }
 SweepInspector::SweepInspector(QWidget *parent) : QWidget(parent), data(NULL), d_curve(NULL) {
   setupUi(this);
   plot->setObjectName( "SweepData" );
   plot->setTitle( "RF Sweep" );
-  plot->setAxisTitle( QwtPlot::xBottom, "Frequency" );
-  //plot->setAxisScaleDiv(QwtPlot::xBottom, yearScaleDiv() );
-  //plot->setAxisScaleDraw(QwtPlot::xBottom, new YearScaleDraw() );
+  plot->setAxisTitle( QwtPlot::xBottom, "Frequency");
   plot->setAxisTitle( QwtPlot::yLeft, QString( "Power Level (dBm)"));
   plot->setAutoReplot(true);
+
+  canvas = new QwtPlotCanvas();
+  canvas->setPalette( Qt::black );
+  canvas->setBorderRadius(0);
+  plot->setCanvas(canvas);
+
+  zoomer = new QwtPlotZoomer( canvas );
+  zoomer->setRubberBandPen( QColor( Qt::white ) );
+  zoomer->setTrackerPen( QColor( Qt::white ) );
+  zoomer->setMousePattern( QwtEventPattern::MouseSelect2, Qt::RightButton, Qt::ControlModifier );
+  zoomer->setMousePattern( QwtEventPattern::MouseSelect3, Qt::RightButton );
+
+  panner = new QwtPlotPanner( canvas );
+  panner->setMouseButton( Qt::MidButton );
 
   //connects
   connect(timeIndex, SIGNAL(valueChanged(int)), this, SLOT(loadSweep(int)));
@@ -42,14 +58,15 @@ void SweepInspector::loadSweep(int index) {
   //load in new sweep values from data
   if (data == NULL) return;
   sliderMoved(index);
-  if (d_curve) d_curve->attach(NULL);
+  if (d_curve) {
+    d_curve->attach(NULL);
+    delete(d_curve);
+  }
   plot->detachItems(QwtPlotItem::Rtti_PlotItem, true);
   plot->detachItems(QwtPlotItem::Rtti_PlotCurve);
   plot->detachItems();
-  //plot->data->clear();
   plot->replot();
   plot->repaint();
-  qDebug() << plot->autoReplot();
   
   fsweep sweep = data->getSweep(index);
 
@@ -57,18 +74,15 @@ void SweepInspector::loadSweep(int index) {
   d_curve->setRenderHint( QwtPlotItem::RenderAntialiased );
   d_curve->setStyle( QwtPlotCurve::Lines );
   d_curve->setPen( QColor( Qt::yellow ), 2, Qt::SolidLine );
-  QwtSymbol *symbol = new QwtSymbol( QwtSymbol::XCross );
-  symbol->setSize( 4 );
-  symbol->setPen( QColor( Qt::yellow ), 2, Qt::SolidLine );
-  //d_curve->setSymbol( symbol );
   d_curve->setSamples( sweep );
   d_curve->attach(plot);
 
   range freqs = data->limits(FREQ);
-  double step = (freqs.second - freqs.first)/ 5.0;
-
-  plot->setAxisScale(QwtPlot::xBottom, freqs.first, freqs.second, step);
+  plot->setAxisScale(QwtPlot::xBottom, freqs.first, freqs.second, (freqs.second - freqs.first)/ 5.0);
   plot->setAxisScale(QwtPlot::yLeft, -135, 20, 10.0);
   plot->replot();
   plot->repaint();
+
+  //set maximum zoom out
+  zoomer->setZoomBase(QRectF(QPointF(freqs.first, -60), QPointF(freqs.second, -135)));
 }

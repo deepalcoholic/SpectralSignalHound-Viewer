@@ -16,6 +16,13 @@ $Id: doer-demod-display.h 725 2014-05-22 21:28:57Z npotts $
 #include <QtCore>
 #include <qwt_plot_curve.h>
 #include <qwt_symbol.h>
+#include <qwt_plot_zoomer.h>
+#include <qwt_plot_panner.h>
+#include <qwt_plot_marker.h>
+#include <qwt_plot_grid.h>
+#include <qwt_plot_curve.h>
+#include <qwt_plot_canvas.h>
+
 #include "SHData.h"
 
 class SweepInspector:public QWidget, public Ui::sweepinspector {
@@ -30,5 +37,8 @@ public slots:
 private:
   QHoundData * data;
   QwtPlotCurve *d_curve;
+  QwtPlotCanvas *canvas;
+  QwtPlotZoomer* zoomer;
+  QwtPlotPanner *panner;
   
 };
