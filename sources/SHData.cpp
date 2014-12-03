@@ -19,7 +19,7 @@ void QHoundData::setupMaxMin() {
     setInterval( Qt::ZAxis, QwtInterval( -150, 15 ) );
 }
 bool QHoundData::openCSV(QString csvfilename) {
-	db.close();
+	if (db.isOpen()) db.close();
 	QFile csv(csvfilename);
 	if (!csv.open(QIODevice::ReadOnly | QIODevice::Text))
 		return false;
@@ -50,8 +50,8 @@ bool QHoundData::openSQL(QString sqlfilename) {
 		db.close();
 	return db.open();
 }
-bool QHoundData::setTable(QString newTable) {
-	QStringList sqlTables = tables();
+bool QHoundData::setSQLTable(QString newTable) {
+	QStringList sqlTables = SQLTables();
 	if (! sqlTables.contains(newTable))
 		return false;
 	currentTable = newTable; //extract the data now
@@ -89,7 +89,7 @@ bool QHoundData::setTable(QString newTable) {
 	setupMaxMin();
 	return !sweep_data.empty();
 }
-QStringList QHoundData::tables(void) {
+QStringList QHoundData::SQLTables(void) {
 	QStringList rtn;
 	if (!db.isOpen()) return rtn;
 	QSqlQuery query(db);
@@ -134,4 +134,29 @@ double QHoundData::value(double time, double freq ) const {
 	if (freq_index == -1) return -std::numeric_limits<double>::max();
 
 	return sweep_data[sweep_index*single_sweep_length + freq_index];
+}
+QString QHoundData::timestampFromIndex(int index) {
+	return QDateTime::fromMSecsSinceEpoch((qint64) (timestamps.at(index) * 1000)).toString("yyyy-MM-dd HH:mm:ss.zzz");
+}
+range QHoundData::limits(RangeType which) {
+	range rtn;
+	switch (which) {
+		case TIME:
+			rtn = std::make_pair(timestamps.front(), timestamps.back()); break;
+		case FREQ:
+			rtn = std::make_pair(freqs.front(), freqs.back()); break;
+		default:
+			rtn = std::make_pair(-std::numeric_limits<double>::max(), -std::numeric_limits<double>::max());
+	}
+	return rtn;
+}
+fsweep QHoundData::getSweep(int index) {
+	fsweep rtn(single_sweep_length);
+	vdouble powers;
+	for(int i=0; i<single_sweep_length; i++)
+		rtn.append( QPointF(freqs.at(i), sweep_data[index*single_sweep_length + i]));
+	return rtn;
+}
+int QHoundData::getNumSweeps() {
+	return timestamps.size();
 }

@@ -8,6 +8,7 @@
  *  one at http://mozilla.org/MPL/2.0/.
 */
 
+#pragma once
 
 #include <limits> //for error values
 #include <iterator> //for std::distance
@@ -20,23 +21,29 @@
 #include <QFile>
 #include <QtSql>
 #include <QDateTime>
+#include <QVector>
+#include <QPointF>
 #include <qwt_raster_data.h> //QWT data type
-
-
-
 
 typedef stxxl::VECTOR_GENERATOR<double>::result stxxl_vdouble;
 typedef std::vector<double> vdouble;
+typedef QVector<QPointF> fsweep;
+typedef std::pair<double, double> range;
+enum RangeType {TIME, FREQ};
 
 class QHoundData: public QwtRasterData {
   public:
     explicit QHoundData();
     bool openCSV(QString);
     bool openSQL(QString);
-    bool setTable(QString);
-    QStringList tables();
-    //double lvalue( double x, double y ) const;
-    virtual double value( double x, double y ) const;
+    bool setSQLTable(QString);
+    QStringList SQLTables();
+    virtual double value(double, double) const;
+    QString timestampFromIndex(int);
+    range limits(RangeType); 
+    fsweep getSweep(int);
+    int getNumSweeps();
+
   private:
     int closest(vdouble, double) const;
     void setupMaxMin();
