@@ -151,7 +151,7 @@ range QHoundData::limits(RangeType which) {
 	return rtn;
 }
 fsweep QHoundData::getSweep(int index) {
-	fsweep rtn(single_sweep_length);
+	fsweep rtn(single_sweep_length); rtn.clear();
 	vdouble powers;
 	for(int i=0; i<single_sweep_length; i++)
 		rtn.append( QPointF(freqs.at(i), sweep_data[index*single_sweep_length + i]));

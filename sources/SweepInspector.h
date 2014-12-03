@@ -23,6 +23,7 @@ $Id: doer-demod-display.h 725 2014-05-22 21:28:57Z npotts $
 #include <qwt_plot_grid.h>
 #include <qwt_plot_marker.h>
 #include <qwt_plot_panner.h>
+#include <qwt_plot_renderer.h>
 #include <qwt_plot_textlabel.h>
 #include <qwt_plot_zoomer.h>
 #include <qwt_scale_draw.h>
@@ -44,6 +45,7 @@ public:
   ~SweepInspector();
   explicit SweepInspector(QWidget *parent = 0);
   void setpData(QHoundData *);
+  void save(QString);
 public slots:
   void sliderMoved(int);
   void loadSweep(int);
@@ -55,5 +57,5 @@ private:
   QwtPlotPanner *panner;
   QwtPlotPicker *picker;
   QwtPlotGrid *grid;
-  //QwtTextLabel tmax, tmin, tavg;
+  QwtPlotMarker *minfo;
 };

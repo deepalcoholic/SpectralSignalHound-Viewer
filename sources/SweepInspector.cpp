@@ -37,6 +37,7 @@ SweepInspector::~SweepInspector() {
   delete(panner);
   delete(picker);
   delete(grid);
+  delete(minfo);
 }
 SweepInspector::SweepInspector(QWidget *parent) : QWidget(parent), data(NULL), d_curve(NULL) {
   setupUi(this);
@@ -45,6 +46,11 @@ SweepInspector::SweepInspector(QWidget *parent) : QWidget(parent), data(NULL), d
   plot->setAxisTitle( QwtPlot::xBottom, "Frequency");
   plot->setAxisTitle( QwtPlot::yLeft, QString( "Power Level (dBm)"));
   plot->setAutoReplot(true);
+
+  plot->enableAxis(QwtPlot::xBottom, true);
+  plot->enableAxis(QwtPlot::yLeft, true);
+  plot->enableAxis(QwtPlot::xTop, false);
+  plot->enableAxis(QwtPlot::yRight, false);
 
   canvas = new QwtPlotCanvas();
   canvas->setPalette( Qt::black );
@@ -76,10 +82,6 @@ SweepInspector::SweepInspector(QWidget *parent) : QWidget(parent), data(NULL), d
 
   //format in kHz, MHz, GHz, not raw values
   plot->setAxisScaleDraw(QwtPlot::xBottom, new FreqScaleDraw);
-
-  //tmax.setFont( QFont( "Helvetica", 10, QFont::Bold ) ); tmax.setColor( Qt::green );
-  //tmin.setFont( QFont( "Helvetica", 10, QFont::Bold ) ); tmin.setColor( Qt::green );
-  //tavg.setFont( QFont( "Helvetica", 10, QFont::Bold ) ); tavg.setColor( Qt::green );
 
   //connects
   connect(timeIndex, SIGNAL(valueChanged(int)), this, SLOT(loadSweep(int)));
@@ -120,22 +122,32 @@ void SweepInspector::loadSweep(int index) {
   plot->setAxisScale(QwtPlot::yLeft, -135, 20, 10.0);
   plot->setTitle( QString("RF Sweep @ %1").arg(timestamp->text()) );
   //set maximum zoom out
-  zoomer->setZoomBase(QRectF(QPointF(freqs.first, -60), QPointF(freqs.second, -135)));
+  zoomer->setZoomBase(QRectF(QPointF(freqs.first, 20), QPointF(freqs.second, -135)));
   zoomer->zoomBase();
 
-
   //find max, min, and average values and drop it on plot as well
-  double max = freqs.first, min = freqs.first, average=0;
+  double max = sweep.first().y(), min = sweep.first().y(), avg=0;
   for(int i=0; i < sweep.size(); i++) {
     max = std::max(max, sweep.at(i).y());
     min = std::min(min, sweep.at(i).y());
-    average += sweep.at(i).y();
-  } average /= sweep.size();
+    avg += sweep.at(i).y();
+  } avg /= sweep.size();
 
-  // tmax.setText(QString("Max: %1 dBm").arg(max));
-  // tmin.setText(QString("Min: %1 dBm").arg(min));
-  // tavg.setText(QString("Avg: %1 dBm").arg(average));
-
+  //add markers onto the plot
+  QwtText tinfo = QwtText(QString("Max: %1 dBm\tMin: %1 dBm\tAvg: %1 dBm").arg(max).arg(min).arg(avg));
+  tinfo.setFont( QFont( "Helvetica", 10, QFont::Bold ) );
+  tinfo.setColor( Qt::green );
+  tinfo.setRenderFlags(Qt::AlignBottom | Qt::AlignCenter);
+  minfo = new QwtPlotMarker(tinfo); 
+  minfo->attach(plot);
+  minfo->setLabel(tinfo);
+  minfo->setValue(freqs.first + (freqs.second-freqs.first)/2, -135); 
   plot->replot();
   plot->repaint();
+}
+void SweepInspector::save(QString filename) {
+  //save the image
+
+  QwtPlotRenderer renderer;
+  renderer.exportTo( plot, "bode.pdf" );
 }

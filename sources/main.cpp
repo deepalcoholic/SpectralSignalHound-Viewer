@@ -13,7 +13,12 @@
 
  int main(int c, char **v) {
  	QHoundData data;
- 	std::cout << "openCSV: " << (data.openCSV("test.csv") ? "Ok": "Fail") << std::endl;
+
+ 	qDebug() << "Opened SQL database: " << (data.openSQL("test.db") ? "Ok": "Fail");
+ 	qDebug() << "Available Tables" << data.SQLTables();
+ 	qDebug() << "Setting Table to fast_20141130L205728: " << (data.setSQLTable("fast_20141130L205728") ? "Ok": "Fail");
+
+ 	//std::cout << "openCSV: " << (data.openCSV("test.csv") ? "Ok": "Fail") << std::endl;
 
  	QApplication *app = new QApplication( c, v);
 
