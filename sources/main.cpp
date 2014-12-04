@@ -15,8 +15,11 @@
  	QHoundData data;
 
  	qDebug() << "Opened SQL database: " << (data.openSQL("test.db") ? "Ok": "Fail");
- 	qDebug() << "Available Tables" << data.SQLTables();
- 	qDebug() << "Setting Table to fast_20141130L205728: " << (data.setSQLTable("fast_20141130L205728") ? "Ok": "Fail");
+ 	QStringList tables = data.SQLTables();
+ 	qDebug() << "Available Tables" <<  tables;
+ 	tables.removeOne(tables.last());
+ 	//qDebug() << "Setting Table to fast_20141130L205728: " << (data.setSQLTable("fast_20141130L205728") ? "Ok": "Fail");
+ 	qDebug() << "Setting Table to FAST_20141204L112314: " << (data.setSQLTable(tables.last()) ? "Ok": "Fail");
 
  	//std::cout << "openCSV: " << (data.openCSV("test.csv") ? "Ok": "Fail") << std::endl;
 
