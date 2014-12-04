@@ -1,11 +1,11 @@
 /*
-demod display that listens for json replies over udp port 57000
-
-$Revision: 725 $
-$Date: 2014-05-22 15:28:57 -0600 (Thu, 22 May 2014) $
-$Author: npotts $
-$HeadURL: https://proxy.subversion.ucar.edu/AVAPS/trunk/cpp-apps/CommonElements/sources/doer-demod-display.h $
-$Id: doer-demod-display.h 725 2014-05-22 21:28:57Z npotts $
+ * Copyright (c) 2014, Nick Potts
+ * All rights reserved.
+ *
+ *  This Source Code Form is subject to the terms of the 
+ *  Mozilla Public License, v. 2.0. If a copy of the MPL 
+ *  was not distributed with this file, You can obtain 
+ *  one at http://mozilla.org/MPL/2.0/.
 */
 
 #pragma once

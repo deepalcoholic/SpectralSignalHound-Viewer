@@ -1,12 +1,13 @@
 /*
-demod display that listens for json replies over udp port 57000
-
-$Revision: 815 $
-$Date: 2014-10-27 13:20:22 -0600 (Mon, 27 Oct 2014) $
-$Author: npotts $
-$HeadURL: https://proxy.subversion.ucar.edu/AVAPS/trunk/cpp-apps/CommonElements/sources/doer-demod-display.cpp $
-$Id: doer-demod-display.cpp 815 2014-10-27 19:20:22Z npotts $
+ * Copyright (c) 2014, Nick Potts
+ * All rights reserved.
+ *
+ *  This Source Code Form is subject to the terms of the 
+ *  Mozilla Public License, v. 2.0. If a copy of the MPL 
+ *  was not distributed with this file, You can obtain 
+ *  one at http://mozilla.org/MPL/2.0/.
 */
+
 #include "SweepInspector.h"
 
 FreqScaleDraw::FreqScaleDraw() : QwtScaleDraw() {}
