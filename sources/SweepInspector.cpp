@@ -134,7 +134,7 @@ void SweepInspector::loadSweep(int index) {
   } avg /= sweep.size();
 
   //add markers onto the plot
-  QwtText tinfo = QwtText(QString("Max: %1 dBm\tMin: %1 dBm\tAvg: %1 dBm").arg(max).arg(min).arg(avg));
+  QwtText tinfo = QwtText(QString("Max: %1 dBm\tMin: %2 dBm\tAvg: %3 dBm").arg(max).arg(min).arg(avg));
   tinfo.setFont( QFont( "Helvetica", 10, QFont::Bold ) );
   tinfo.setColor( Qt::green );
   tinfo.setRenderFlags(Qt::AlignBottom | Qt::AlignCenter);
@@ -146,8 +146,6 @@ void SweepInspector::loadSweep(int index) {
   plot->repaint();
 }
 void SweepInspector::save(QString filename) {
-  //save the image
-
   QwtPlotRenderer renderer;
-  renderer.exportTo( plot, "bode.pdf" );
+  renderer.exportTo( plot, filename);
 }
