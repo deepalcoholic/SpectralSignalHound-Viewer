@@ -37,8 +37,7 @@ QwtText FreqScaleDraw::label(double v) const {
 
 TimeScaleDraw::TimeScaleDraw() : QwtScaleDraw() {}
 TimeScaleDraw::~TimeScaleDraw() {}
-QwtText TimeScaleDraw::label(double v) const {
-  //Convert Double date to a string
+QwtText TimeScaleDraw::label(double v) const { //Convert Double date to a string
   return QwtText(QDateTime::fromMSecsSinceEpoch((qint64) (v*1000)).toString("yyyy-MM-dd\nHH:mm:ss.zzz"));
 }
 
@@ -65,42 +64,24 @@ QwtText FreqdBmPicker::trackerTextF( const QPointF &pos ) const {
     case 0: rtn = QString("(%1Hz, %2dBm)").arg(pos.x(), 0, 'f', 2).arg(pos.y(), 0, 'f', 1); break;
   }
   return QwtText(rtn);
-  /*
-  QwtText text("(" + QDateTime::from QString::number(pos.x()) + "...," + QString::number(pos.y()) + ") " );
-  QColor bgColor(Qt::blue);
-  bgColor.setAlpha(160);
-  text.setBackgroundBrush(QBrush(bgColor));
-  return text;
-  switch (rubberBand())
-  {
-      case HLineRubberBand:
-          text.sprintf( "%.4f", pos.y() );
-          break;
-      case VLineRubberBand:
-          text.sprintf( "%.4f", pos.x() );
-          break;
-      default:
-          text.sprintf( "%.4f, %.4f", pos.x(), pos.y() );
-  }
-  return QwtText( text );
-  */
 }
 
-TimeFreqPicker::TimeFreqPicker(int x, int y, RubberBand rb, DisplayMode dm, QWidget* w): QwtPlotPicker(x, y, rb, dm, w) {
-  setRubberBand( rb );
-  setTrackerMode( dm );
-  //setStateMachine( new QwtPickerTrackerMachine() );
-  setTrackerPen(QColor(Qt::black));
-  setRubberBandPen(QColor(Qt::black));
-  QwtPicker::setEnabled( true );
-}
+// TimeFreqPicker::TimeFreqPicker(int x, int y, RubberBand rb, DisplayMode dm, QWidget* w): QwtPlotPicker(x, y, rb, dm, w) {
+//   setRubberBand( rb );
+//   setTrackerMode( dm );
+//   //setStateMachine( new QwtPickerTrackerMachine() );
+//   setTrackerPen(QColor(Qt::black));
+//   setRubberBandPen(QColor(Qt::black));
+//   QwtPicker::setEnabled( true );
+// }
 TimeFreqPicker::TimeFreqPicker( QWidget *canvas ): QwtPlotPicker( canvas ) {
   setTrackerMode( QwtPicker::AlwaysOn );
   setRubberBand( QwtPlotPicker::CrossRubberBand );
-  //setStateMachine( new QwtPickerTrackerMachine() );
+  setStateMachine( new QwtPickerTrackerMachine() );
   setTrackerPen(QColor(Qt::black));
   setRubberBandPen(QColor(Qt::black));
   QwtPicker::setEnabled( true );
+  qDebug() << "Picker created" << this;
 }
 QwtText TimeFreqPicker::trackerTextF( const QPointF &pos ) const {
   QString rtn = QDateTime::fromMSecsSinceEpoch((qint64) (pos.x()*1000)).toString("yyyy-MM-dd  %2\nHH:mm:ss.zzz");

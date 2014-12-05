@@ -39,13 +39,13 @@ public:
 	FreqdBmPicker( QWidget *canvas );
 	//FreqdBmPicker(int xAxis, int yAxis, RubberBand rubberBand, DisplayMode trackerMode, QwtPlotCanvas* canvas);
 private:
-	QwtText trackerTextF( const QPointF &pos ) const;
+	virtual QwtText trackerTextF( const QPointF &pos ) const;
 };
 
 class TimeFreqPicker : public QwtPlotPicker {
 public:
-	TimeFreqPicker(int xAxis, int yAxis, RubberBand rubberBand, DisplayMode trackerMode, QWidget* canvas);
+	//TimeFreqPicker(int xAxis, int yAxis, RubberBand rubberBand, DisplayMode trackerMode, QWidget* canvas);
 	TimeFreqPicker( QWidget *canvas );
 private:
-	QwtText trackerTextF( const QPointF &pos ) const;
+	virtual QwtText trackerTextF( const QPointF &pos ) const;
 };

@@ -47,6 +47,7 @@ private:
   QwtPlotZoomer *zoomer;
   QwtPlotPanner *panner;
   QwtPlotPicker *picker;
+  FreqdBmPicker *picker2;
   QwtPlotGrid *grid;
   QwtPlotMarker *minfo;
 };

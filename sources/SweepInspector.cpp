@@ -10,6 +10,29 @@
 
 #include "SweepInspector.h"
 
+class DistancePicker: public QwtPlotPicker {
+public:
+    DistancePicker( QWidget *canvas ): QwtPlotPicker( canvas ) {
+        setTrackerMode( QwtPicker::ActiveOnly );
+        setStateMachine( new QwtPickerDragLineMachine() );
+        setRubberBand( QwtPlotPicker::PolygonRubberBand );
+    }
+    virtual QwtText trackerTextF( const QPointF &pos ) const {
+        QwtText text;
+        const QPolygon points = selection();
+        if ( !points.isEmpty() ) {
+            QString num;
+            num.setNum( QLineF( pos, invTransform( points[0] ) ).length() );
+            QColor bg( Qt::white );
+            bg.setAlpha( 200 );
+            text.setBackgroundBrush( QBrush( bg ) );
+            text.setText( num );
+        }
+        return text;
+    }
+};
+
+
 SweepInspector::~SweepInspector() {
   /** destroy stuffs  */
   delete(d_curve);
@@ -42,14 +65,26 @@ SweepInspector::SweepInspector(QWidget *parent) : QWidget(parent), data(NULL), d
   zoomer = new QwtPlotZoomer( canvas );
   zoomer->setRubberBandPen( QColor( Qt::white ) );
   zoomer->setTrackerPen( QColor( Qt::white ) );
-  panner = new QwtPlotPanner( canvas );
-  panner->setMouseButton( Qt::MidButton );
+  //panner = new QwtPlotPanner( canvas );
+  //panner->setMouseButton( Qt::MidButton );
 
   //Show the X/Y markers that follow the mouse
-  picker = new QwtPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn, canvas);
-  picker->setStateMachine( new QwtPickerTrackerMachine() );
-  picker->setRubberBandPen( QColor( Qt::cyan ) );
-  picker->setTrackerPen( QColor( Qt::cyan ) );
+  // picker = new QwtPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn, canvas);
+  // picker->setStateMachine( new QwtPickerTrackerMachine() );
+  // picker->setRubberBandPen( QColor( Qt::cyan ) );
+  // picker->setTrackerPen( QColor( Qt::cyan ) );
+
+  // picker = new DistancePicker(canvas);
+  //picker2 = new TimeFreqPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn, canvas);
+  // picker->setMousePattern( QwtPlotPicker::MouseSelect1, Qt::RightButton );
+  // picker->setRubberBandPen( QPen( Qt::blue ) );
+
+
+  picker2 = new FreqdBmPicker(plot->canvas());
+  //TimeFreqPicker *pkr(plot->canvas());
+  //pkr.setStateMachine( new QwtPickerTrackerMachine() );
+  //pkr.setRubberBandPen( QColor( Qt::cyan ) );
+
 
   //Setup grid
   grid = new QwtPlotGrid();
@@ -96,6 +131,19 @@ void SweepInspector::loadSweep(int index) {
   d_curve->setPen( QColor( Qt::yellow ), 2, Qt::SolidLine );
   d_curve->setSamples( sweep );
   d_curve->attach(plot);
+
+  // TimeFreqPicker pkr(plot->canvas());
+  // pkr.setStateMachine( new QwtPickerTrackerMachine() );
+  // pkr.setRubberBandPen( QColor( Qt::cyan ) );
+  // picker->setTrackerPen( QColor( Qt::cyan ) );
+
+  // picker = new DistancePicker(canvas);
+  // picker2 = new TimeFreqPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn, canvas);
+  // pkr.setMousePattern( QwtPlotPicker::MouseSelect1, Qt::RightButton );
+  // picker->setRubberBandPen( QPen( Qt::blue ) );
+
+  // TimeFreqPicker pkr(plot->canvas());
+  //picker2 = new FreqdBmPicker(plot->canvas());
 
   QwtInterval frange = data->limits(FREQ);
   plot->setAxisScale(QwtPlot::xBottom, frange.minValue(), frange.maxValue(), (frange.maxValue() - frange.minValue())/ 5.0);

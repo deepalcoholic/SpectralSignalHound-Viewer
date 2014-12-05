@@ -18,15 +18,14 @@
  	qDebug() << "Opened SQL database: " << (data.openSQL("test.db") ? "Ok": "Fail");
  	QStringList tables = data.SQLTables();
  	qDebug() << "Available Tables" <<  tables;
- 	//qDebug() << "Setting Table to fast_20141130L205728: " << (data.setSQLTable("fast_20141130L205728") ? "Ok": "Fail");
- 	qDebug() << "Setting Table to FAST_20141204L112314: " << (data.setSQLTable(tables.last()) ? "Ok": "Fail");
+ 	qDebug() << "Setting Table to fast_20141130L205728: " << (data.setSQLTable("fast_20141203L173406") ? "Ok": "Fail");
+ 	//qDebug() << "Setting Table to FAST_20141204L112314: " << (data.setSQLTable(tables.last()) ? "Ok": "Fail");
 
  	//std::cout << "openCSV: " << (data.openCSV("test.csv") ? "Ok": "Fail") << std::endl;
-
  	QApplication *app = new QApplication( c, v);
 
-    //SweepInspector *si = new SweepInspector();
-    SpectralInspector *si = new SpectralInspector();
+    SweepInspector *si = new SweepInspector();
+    // SpectralInspector *si = new SpectralInspector();
     si->setpData(&data);
     si->show();
 
