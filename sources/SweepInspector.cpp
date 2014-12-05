@@ -10,26 +10,6 @@
 
 #include "SweepInspector.h"
 
-FreqScaleDraw::FreqScaleDraw() : QwtScaleDraw() {}
-FreqScaleDraw::~FreqScaleDraw() {}
-QwtText FreqScaleDraw::label(double v) const {
-  //convert 1320 to 1.3KHz, 15012402 to 15.0MHz ext
-  QString rtn;
-  switch ( (int) std::log10(v)) {
-    case 9: rtn = QString("%1 GHz").arg(v/1e9, 0, 'f', 2); break;
-    case 8:
-    case 7:
-    case 6: rtn = QString("%1 MHz").arg(v/1e6, 0, 'f', 2); break;
-    case 5:
-    case 4:
-    case 3: rtn = QString("%1 kHz").arg(v/1e3, 0, 'f', 2); break;
-    case 2:
-    case 1:
-    case 0: rtn = QString("%1 Hz").arg(v, 0, 'f', 2); break;
-  }
-  return QwtText(rtn);
-}
-
 SweepInspector::~SweepInspector() {
   /** destroy stuffs  */
   delete(d_curve);
@@ -40,7 +20,7 @@ SweepInspector::~SweepInspector() {
   delete(grid);
   delete(minfo);
 }
-SweepInspector::SweepInspector(QWidget *parent) : QWidget(parent), data(NULL), d_curve(NULL) {
+SweepInspector::SweepInspector(QWidget *parent) : QWidget(parent), data(NULL), d_curve(NULL), picker(NULL) {
   setupUi(this);
   plot->setObjectName( "SweepData" );
   plot->setTitle( "RF Sweep" );
@@ -66,10 +46,9 @@ SweepInspector::SweepInspector(QWidget *parent) : QWidget(parent), data(NULL), d
   panner->setMouseButton( Qt::MidButton );
 
   //Show the X/Y markers that follow the mouse
-  picker = new QwtPlotPicker( QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn, canvas);
+  picker = new QwtPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn, canvas);
   picker->setStateMachine( new QwtPickerTrackerMachine() );
   picker->setRubberBandPen( QColor( Qt::cyan ) );
-  picker->setRubberBand( QwtPicker::CrossRubberBand );
   picker->setTrackerPen( QColor( Qt::cyan ) );
 
   //Setup grid
@@ -118,12 +97,12 @@ void SweepInspector::loadSweep(int index) {
   d_curve->setSamples( sweep );
   d_curve->attach(plot);
 
-  range freqs = data->limits(FREQ);
-  plot->setAxisScale(QwtPlot::xBottom, freqs.first, freqs.second, (freqs.second - freqs.first)/ 5.0);
+  QwtInterval frange = data->limits(FREQ);
+  plot->setAxisScale(QwtPlot::xBottom, frange.minValue(), frange.maxValue(), (frange.maxValue() - frange.minValue())/ 5.0);
   plot->setAxisScale(QwtPlot::yLeft, -135, 20, 10.0);
   plot->setTitle( QString("RF Sweep @ %1").arg(timestamp->text()) );
   //set maximum zoom out
-  zoomer->setZoomBase(QRectF(QPointF(freqs.first, 20), QPointF(freqs.second, -135)));
+  zoomer->setZoomBase(QRectF(QPointF(frange.minValue(), 20), QPointF(frange.maxValue(), -135)));
   zoomer->zoomBase();
 
   //find max, min, and average values and drop it on plot as well
@@ -142,7 +121,7 @@ void SweepInspector::loadSweep(int index) {
   minfo = new QwtPlotMarker(tinfo); 
   minfo->attach(plot);
   minfo->setLabel(tinfo);
-  minfo->setValue(freqs.first + (freqs.second-freqs.first)/2, -135); 
+  minfo->setValue(frange.minValue() + (frange.maxValue() - frange.minValue())/2, -135); 
   plot->replot();
   plot->repaint();
 }

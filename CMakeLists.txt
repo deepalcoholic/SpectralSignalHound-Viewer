@@ -40,7 +40,9 @@ INCLUDE_DIRECTORIES(${INCLUDE_DIRECTORIES} ${QWT_INCLUDE_DIR})
 SET(SRC 
 	sources/main.cpp
 	sources/SHData.cpp sources/SHData.h
+	sources/helpers.cpp sources/helpers.h
 	sources/SweepInspector.cpp sources/SweepInspector.h
+	sources/SpectralInspector.cpp sources/SpectralInspector.h
 	)
 
 # Use the Widgets module from Qt 5.

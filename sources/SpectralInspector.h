@@ -12,41 +12,43 @@
 #ifndef QT_STATIC_CONST
 #define QT_STATIC_CONST static const
 #endif
-#include <cmath>
-#include "ui_SweepInspector.h"
-#include "SweepInspector.moc"
+#include "ui_SpectralInspector.h"
+//#include "SpectralInspector.moc"
 #include <QtWidgets>
 #include <QtCore>
+#include <qwt_color_map.h>
+#include <qwt_picker_machine.h>
+#include <qwt_plot.h>
+#include <qwt_plot_layout.h>
 #include <qwt_plot_canvas.h>
 #include <qwt_plot_curve.h>
 #include <qwt_plot_grid.h>
 #include <qwt_plot_marker.h>
 #include <qwt_plot_panner.h>
 #include <qwt_plot_renderer.h>
+#include <qwt_plot_spectrogram.h>
 #include <qwt_plot_textlabel.h>
 #include <qwt_plot_zoomer.h>
-#include <qwt_scale_draw.h>
+#include <qwt_scale_widget.h>
 #include <qwt_symbol.h>
 #include "helpers.h"
 #include "SHData.h"
 
-class SweepInspector:public QWidget, public Ui::sweepinspector {
+class SpectralInspector:public QWidget, public Ui::SpectralInspector {
 Q_OBJECT
 public:
-  ~SweepInspector();
-  explicit SweepInspector(QWidget *parent = 0);
+  ~SpectralInspector();
+  explicit SpectralInspector(QWidget *parent = 0);
   void setpData(QHoundData *);
   void save(QString);
 public slots:
-  void sliderMoved(int);
-  void loadSweep(int);
+  
 private:
   QHoundData * data;
-  QwtPlotCurve *d_curve;
+  QwtPlotSpectrogram *spectrogram;
   QwtPlotCanvas *canvas;
   QwtPlotZoomer *zoomer;
   QwtPlotPanner *panner;
   QwtPlotPicker *picker;
   QwtPlotGrid *grid;
-  QwtPlotMarker *minfo;
 };

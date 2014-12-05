@@ -23,7 +23,8 @@
 #include <QDateTime>
 #include <QVector>
 #include <QPointF>
-#include <qwt_raster_data.h> //QWT data type
+#include <qwt_interval.h>
+#include <qwt_raster_data.h>
 
 typedef stxxl::VECTOR_GENERATOR<double>::result stxxl_vdouble;
 typedef std::vector<double> vdouble;
@@ -40,7 +41,7 @@ class QHoundData: public QwtRasterData {
     QStringList SQLTables();
     virtual double value(double, double) const;
     QString timestampFromIndex(int);
-    range limits(RangeType); 
+    QwtInterval limits(RangeType); 
     fsweep getSweep(int);
     int getNumSweeps();
 

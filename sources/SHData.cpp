@@ -12,6 +12,7 @@
 
 QHoundData::QHoundData() {
 	db = QSqlDatabase::addDatabase("QSQLITE", "SHData");
+	// setAttribute( QwtRasterData::WithoutGaps, true );
 }
 void QHoundData::setupMaxMin() {
 	setInterval( Qt::XAxis, QwtInterval( timestamps.front(), timestamps.back() ) );
@@ -138,15 +139,13 @@ double QHoundData::value(double time, double freq ) const {
 QString QHoundData::timestampFromIndex(int index) {
 	return QDateTime::fromMSecsSinceEpoch((qint64) (timestamps.at(index) * 1000)).toString("yyyy-MM-dd HH:mm:ss.zzz");
 }
-range QHoundData::limits(RangeType which) {
-	range rtn;
+QwtInterval QHoundData::limits(RangeType which) {
+	QwtInterval rtn(-std::numeric_limits<double>::max(), -std::numeric_limits<double>::max());
 	switch (which) {
 		case TIME:
-			rtn = std::make_pair(timestamps.front(), timestamps.back()); break;
+			rtn = QwtInterval(timestamps.front(), timestamps.back()); break;
 		case FREQ:
-			rtn = std::make_pair(freqs.front(), freqs.back()); break;
-		default:
-			rtn = std::make_pair(-std::numeric_limits<double>::max(), -std::numeric_limits<double>::max());
+			rtn = QwtInterval(freqs.front(), freqs.back()); break;
 	}
 	return rtn;
 }
