@@ -41,6 +41,7 @@ QwtText TimeScaleDraw::label(double v) const { //Convert Double date to a string
   return QwtText(QDateTime::fromMSecsSinceEpoch((qint64) (v*1000)).toString("yyyy-MM-dd\nHH:mm:ss.zzz"));
 }
 
+
 FreqdBmPicker::FreqdBmPicker( QWidget *canvas ): QwtPlotPicker( canvas ) {
   setTrackerMode( QwtPicker::AlwaysOn );
   setRubberBand( QwtPlotPicker::CrossRubberBand );
@@ -66,14 +67,14 @@ QwtText FreqdBmPicker::trackerTextF( const QPointF &pos ) const {
   return QwtText(rtn);
 }
 
-// TimeFreqPicker::TimeFreqPicker(int x, int y, RubberBand rb, DisplayMode dm, QWidget* w): QwtPlotPicker(x, y, rb, dm, w) {
-//   setRubberBand( rb );
-//   setTrackerMode( dm );
-//   //setStateMachine( new QwtPickerTrackerMachine() );
-//   setTrackerPen(QColor(Qt::black));
-//   setRubberBandPen(QColor(Qt::black));
-//   QwtPicker::setEnabled( true );
-// }
+TimeFreqPicker::TimeFreqPicker(int x, int y, RubberBand rb, DisplayMode dm, QWidget* w): QwtPlotPicker(x, y, rb, dm, w) {
+  setRubberBand( rb );
+  setTrackerMode( dm );
+  //setStateMachine( new QwtPickerTrackerMachine() );
+  setTrackerPen(QColor(Qt::black));
+  setRubberBandPen(QColor(Qt::black));
+  QwtPicker::setEnabled( true );
+}
 TimeFreqPicker::TimeFreqPicker( QWidget *canvas ): QwtPlotPicker( canvas ) {
   setTrackerMode( QwtPicker::AlwaysOn );
   setRubberBand( QwtPlotPicker::CrossRubberBand );

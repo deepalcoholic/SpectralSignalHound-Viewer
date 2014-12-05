@@ -10,29 +10,6 @@
 
 #include "SweepInspector.h"
 
-class DistancePicker: public QwtPlotPicker {
-public:
-    DistancePicker( QWidget *canvas ): QwtPlotPicker( canvas ) {
-        setTrackerMode( QwtPicker::ActiveOnly );
-        setStateMachine( new QwtPickerDragLineMachine() );
-        setRubberBand( QwtPlotPicker::PolygonRubberBand );
-    }
-    virtual QwtText trackerTextF( const QPointF &pos ) const {
-        QwtText text;
-        const QPolygon points = selection();
-        if ( !points.isEmpty() ) {
-            QString num;
-            num.setNum( QLineF( pos, invTransform( points[0] ) ).length() );
-            QColor bg( Qt::white );
-            bg.setAlpha( 200 );
-            text.setBackgroundBrush( QBrush( bg ) );
-            text.setText( num );
-        }
-        return text;
-    }
-};
-
-
 SweepInspector::~SweepInspector() {
   /** destroy stuffs  */
   delete(d_curve);
