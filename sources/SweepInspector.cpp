@@ -14,7 +14,7 @@ SweepInspector::~SweepInspector() {
   /** destroy stuffs  */
   delete(d_curve);
   delete(canvas);
-  delete(zoomer);
+  // delete(zoomer);
   delete(panner);
   delete(picker);
   delete(grid);
@@ -39,11 +39,11 @@ SweepInspector::SweepInspector(QWidget *parent) : QWidget(parent), data(NULL), d
   plot->setCanvas(canvas);
 
   //Allow zooming / panning
-  zoomer = new QwtPlotZoomer( canvas );
-  zoomer->setRubberBandPen( QColor( Qt::white ) );
-  zoomer->setTrackerPen( QColor( Qt::white ) );
-  //panner = new QwtPlotPanner( canvas );
-  //panner->setMouseButton( Qt::MidButton );
+  // zoomer = new QwtPlotZoomer( canvas );
+  // zoomer->setRubberBandPen( QColor( Qt::white ) );
+  // zoomer->setTrackerPen( QColor( Qt::white ) );
+  panner = new QwtPlotPanner( canvas );
+  panner->setMouseButton( Qt::MidButton );
 
   //Show the X/Y markers that follow the mouse
   // picker = new QwtPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn, canvas);
@@ -56,8 +56,10 @@ SweepInspector::SweepInspector(QWidget *parent) : QWidget(parent), data(NULL), d
   // picker->setMousePattern( QwtPlotPicker::MouseSelect1, Qt::RightButton );
   // picker->setRubberBandPen( QPen( Qt::blue ) );
 
-
-  picker2 = new FreqdBmPicker(plot->canvas());
+  picker = new FreqdBmPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn, canvas);
+  //picker = new FreqdBmPicker(plot->canvas());
+  //picker->setStateMachine( new QwtPickerTrackerMachine() );
+  //picker->setRubberBandPen( QColor( Qt::cyan ) );
   //TimeFreqPicker *pkr(plot->canvas());
   //pkr.setStateMachine( new QwtPickerTrackerMachine() );
   //pkr.setRubberBandPen( QColor( Qt::cyan ) );
@@ -109,6 +111,14 @@ void SweepInspector::loadSweep(int index) {
   d_curve->setSamples( sweep );
   d_curve->attach(plot);
 
+  delete(picker);
+  picker = new FreqdBmPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn, canvas);
+  connect(picker, SIGNAL(selected(QPointF)), this, SLOT(moved(QPointF)));
+
+  // picker = new FreqdBmPicker(canvas);
+  // picker->setStateMachine( new QwtPickerTrackerMachine() );
+  // picker->setRubberBandPen( QColor( Qt::cyan ) );
+
   // TimeFreqPicker pkr(plot->canvas());
   // pkr.setStateMachine( new QwtPickerTrackerMachine() );
   // pkr.setRubberBandPen( QColor( Qt::cyan ) );
@@ -127,8 +137,8 @@ void SweepInspector::loadSweep(int index) {
   plot->setAxisScale(QwtPlot::yLeft, -135, 20, 10.0);
   plot->setTitle( QString("RF Sweep @ %1").arg(timestamp->text()) );
   //set maximum zoom out
-  zoomer->setZoomBase(QRectF(QPointF(frange.minValue(), 20), QPointF(frange.maxValue(), -135)));
-  zoomer->zoomBase();
+  // zoomer->setZoomBase(QRectF(QPointF(frange.minValue(), 20), QPointF(frange.maxValue(), -135)));
+  // zoomer->zoomBase();
 
   //find max, min, and average values and drop it on plot as well
   double max = sweep.first().y(), min = sweep.first().y(), avg=0;
@@ -153,4 +163,23 @@ void SweepInspector::loadSweep(int index) {
 void SweepInspector::save(QString filename) {
   QwtPlotRenderer renderer;
   renderer.exportTo( plot, filename);
+}
+
+void SweepInspector::moved(QPointF pos) {
+  QString rtn;
+  switch ( (int) std::log10(pos.x())) {
+    case 9: rtn = QString("(%1GHz, %2dBm)").arg(pos.x()/1e9, 0, 'f', 2); break;
+    case 8:
+    case 7:
+    case 6: rtn = QString("(%1MHz, %2dBm)").arg(pos.x()/1e6, 0, 'f', 2); break;
+    case 5:
+    case 4:
+    case 3: rtn = QString("(%1kHz, %2dBm)").arg(pos.x()/1e3, 0, 'f', 2); break;
+    case 2:
+    case 1:
+    case 0:
+    default: rtn = QString("(%1Hz, %2dBm)").arg(pos.x(), 0, 'f', 2); break;
+  }
+  rtn = rtn.arg(pos.y(), 0, 'f', 1);
+  qDebug() << rtn;
 }

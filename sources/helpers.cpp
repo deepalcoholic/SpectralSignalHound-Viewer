@@ -41,36 +41,51 @@ QwtText TimeScaleDraw::label(double v) const { //Convert Double date to a string
   return QwtText(QDateTime::fromMSecsSinceEpoch((qint64) (v*1000)).toString("yyyy-MM-dd\nHH:mm:ss.zzz"));
 }
 
-
+FreqdBmPicker::FreqdBmPicker(int x, int y, RubberBand rb, DisplayMode dm, QWidget* w): QwtPlotPicker(x, y, rb, dm, w) {
+  setTrackerMode( dm );
+  setRubberBand( rb );
+  setStateMachine( new QwtPickerTrackerMachine() );
+  setTrackerPen(QColor(Qt::cyan));
+  setRubberBandPen(QColor(Qt::cyan));
+  qDebug() << isEnabled();
+  setEnabled(true);
+}
 FreqdBmPicker::FreqdBmPicker( QWidget *canvas ): QwtPlotPicker( canvas ) {
   setTrackerMode( QwtPicker::AlwaysOn );
   setRubberBand( QwtPlotPicker::CrossRubberBand );
   setStateMachine( new QwtPickerTrackerMachine() );
   setTrackerPen(QColor(Qt::cyan));
   setRubberBandPen(QColor(Qt::cyan));
+  qDebug() << isEnabled();
+  setEnabled(true);
+}
+QwtText FreqdBmPicker::trackerText( const QPoint &pos ) const {
+  qDebug() << "Here";
+  return trackerTextF(pos);
 }
 QwtText FreqdBmPicker::trackerTextF( const QPointF &pos ) const {
   QString rtn;
-  qDebug() << "here2" << pos;
   switch ( (int) std::log10(pos.x())) {
-    case 9: rtn = QString("(%1GHz, %2dBm)").arg(pos.x()/1e9, 0, 'f', 2).arg(pos.y(), 0, 'f', 1); break;
+    case 9: rtn = QString("(%1GHz, %2dBm)").arg(pos.x()/1e9, 0, 'f', 2); break;
     case 8:
     case 7:
-    case 6: rtn = QString("(%1MHz, %2dBm)").arg(pos.x()/1e6, 0, 'f', 2).arg(pos.y(), 0, 'f', 1); break;
+    case 6: rtn = QString("(%1MHz, %2dBm)").arg(pos.x()/1e6, 0, 'f', 2); break;
     case 5:
     case 4:
-    case 3: rtn = QString("(%1kHz, %2dBm)").arg(pos.x()/1e3, 0, 'f', 2).arg(pos.y(), 0, 'f', 1); break;
+    case 3: rtn = QString("(%1kHz, %2dBm)").arg(pos.x()/1e3, 0, 'f', 2); break;
     case 2:
     case 1:
-    case 0: rtn = QString("(%1Hz, %2dBm)").arg(pos.x(), 0, 'f', 2).arg(pos.y(), 0, 'f', 1); break;
+    case 0:
+    default: rtn = QString("(%1Hz, %2dBm)").arg(pos.x(), 0, 'f', 2); break;
   }
+  rtn = rtn.arg(pos.y(), 0, 'f', 1);
   return QwtText(rtn);
 }
 
 TimeFreqPicker::TimeFreqPicker(int x, int y, RubberBand rb, DisplayMode dm, QWidget* w): QwtPlotPicker(x, y, rb, dm, w) {
   setRubberBand( rb );
   setTrackerMode( dm );
-  //setStateMachine( new QwtPickerTrackerMachine() );
+  setStateMachine( new QwtPickerTrackerMachine() );
   setTrackerPen(QColor(Qt::black));
   setRubberBandPen(QColor(Qt::black));
   QwtPicker::setEnabled( true );

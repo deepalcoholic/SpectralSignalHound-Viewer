@@ -37,14 +37,16 @@ public:
 class FreqdBmPicker : public QwtPlotPicker {
 public:
 	FreqdBmPicker( QWidget *canvas );
-private:
-	virtual QwtText trackerTextF( const QPointF &pos ) const;
+	FreqdBmPicker(int xAxis, int yAxis, RubberBand rubberBand, DisplayMode trackerMode, QWidget* canvas);
+	virtual QwtText trackerText( const QPoint & ) const;
+	virtual QwtText trackerTextF( const QPointF & ) const;
 };
 
+
 class TimeFreqPicker : public QwtPlotPicker {
-public:
-	TimeFreqPicker(int xAxis, int yAxis, RubberBand rubberBand, DisplayMode trackerMode, QwtPlotCanvas* canvas);
+public:	
 	TimeFreqPicker( QWidget *canvas );
-private:
+	TimeFreqPicker(int xAxis, int yAxis, RubberBand rubberBand, DisplayMode trackerMode, QWidget* canvas);
+//protected:
 	virtual QwtText trackerTextF( const QPointF &pos ) const;
 };

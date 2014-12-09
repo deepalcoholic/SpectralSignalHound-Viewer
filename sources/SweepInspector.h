@@ -40,14 +40,14 @@ public:
 public slots:
   void sliderMoved(int);
   void loadSweep(int);
+  void moved(QPointF);
 private:
   QHoundData * data;
   QwtPlotCurve *d_curve;
   QwtPlotCanvas *canvas;
   QwtPlotZoomer *zoomer;
   QwtPlotPanner *panner;
-  QwtPlotPicker *picker;
-  FreqdBmPicker *picker2;
+  FreqdBmPicker *picker;
   QwtPlotGrid *grid;
   QwtPlotMarker *minfo;
 };
