@@ -181,5 +181,4 @@ void SweepInspector::moved(QPointF pos) {
     default: rtn = QString("(%1Hz, %2dBm)").arg(pos.x(), 0, 'f', 2); break;
   }
   rtn = rtn.arg(pos.y(), 0, 'f', 1);
-  qDebug() << rtn;
 }
