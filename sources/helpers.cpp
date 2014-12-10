@@ -41,10 +41,13 @@ QwtText TimeScaleDraw::label(double v) const { //Convert Double date to a string
   return QwtText(QDateTime::fromMSecsSinceEpoch((qint64) (v*1000)).toString("yyyy-MM-dd\nHH:mm:ss.zzz"));
 }
 
+
+FreqdBmPicker::~FreqdBmPicker() { delete(machine); }
 FreqdBmPicker::FreqdBmPicker(int x, int y, RubberBand rb, DisplayMode dm, QWidget* w): QwtPlotPicker(x, y, rb, dm, w) {
   setTrackerMode( dm );
   setRubberBand( rb );
-  setStateMachine( new QwtPickerTrackerMachine() );
+  machine = new QwtPickerTrackerMachine();
+  setStateMachine( machine );
   setTrackerPen(QColor(Qt::cyan));
   setRubberBandPen(QColor(Qt::cyan));
   setEnabled(true);
@@ -52,7 +55,8 @@ FreqdBmPicker::FreqdBmPicker(int x, int y, RubberBand rb, DisplayMode dm, QWidge
 FreqdBmPicker::FreqdBmPicker( QWidget *canvas ): QwtPlotPicker( canvas ) {
   setTrackerMode( QwtPicker::AlwaysOn );
   setRubberBand( QwtPlotPicker::CrossRubberBand );
-  setStateMachine( new QwtPickerTrackerMachine() );
+  machine = new QwtPickerTrackerMachine();
+  setStateMachine( machine );
   setTrackerPen(QColor(Qt::cyan));
   setRubberBandPen(QColor(Qt::cyan));
   setEnabled(true);

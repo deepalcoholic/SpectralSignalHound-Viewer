@@ -24,6 +24,7 @@
 #include <qwt_plot_renderer.h>
 #include <qwt_plot_textlabel.h>
 #include <qwt_plot_zoomer.h>
+#include <qwt_scale_engine.h>
 #include <qwt_scale_draw.h>
 #include <qwt_symbol.h>
 #include "helpers.h"
@@ -37,7 +38,7 @@ public:
   
   void setpData(QHoundData *);
   void save(QString);
-private slots:
+public slots:
   void loadSweep(int);
 
 private:
@@ -46,7 +47,7 @@ private:
   QwtPlotCanvas *canvas;
   QwtPlotZoomer *zoomer;
   QwtPlotPanner *panner;
-  FreqdBmPicker *picker;
+  //FreqdBmPicker *picker;
+  QwtPlotPicker *picker;
   QwtPlotGrid *grid;
-  QwtPlotMarker *minfo;
 };

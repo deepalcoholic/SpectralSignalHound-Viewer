@@ -132,7 +132,6 @@ bool QHoundData::openSQL(QString sqlfilename) {
 	temps.clear(); temps.reserve(RESERVE_SIZE);
 	freqs.clear(); freqs.reserve(20000);
 	db.setDatabaseName(sqlfilename);
-	qDebug() << "QHoundData::openSQL> Oke";
  	return db.open();
 }
 
@@ -202,6 +201,7 @@ double QHoundData::value(double time, double freq ) const {
 	return -std::numeric_limits<double>::max();
 }
 fsweep QHoundData::getSweep(int index) {
+	curr_sweep_index = index;
 	fsweep rtn(single_sweep_length); rtn.clear();
 	if (csv->isOpen()) {
 		csv->seek(locs.at(index).second);
@@ -225,6 +225,21 @@ fsweep QHoundData::getSweep(int index) {
 		}
 	}
 	return rtn;
+}
+
+QString QHoundData::plotText() {
+	/**Returns a string to put on the plot*/
+	if (csv->isOpen()) {
+		QString rtn("%1\n%3: %2");
+		rtn = rtn.arg( QFileInfo(csv->fileName()).fileName() ).arg(timestampFromIndex(curr_sweep_index)).arg(curr_sweep_index);
+		return rtn;
+	}
+	if (db.isOpen()) {
+		QString rtn("%1\n%2\n%4: %3\n");
+		rtn = rtn.arg( QFileInfo(db.databaseName()).fileName()).arg(currentTable).arg(timestampFromIndex(curr_sweep_index)).arg(curr_sweep_index);
+		return rtn;
+	}
+	return "";
 }
 
 QStringList QHoundData::sqlMetadata() {

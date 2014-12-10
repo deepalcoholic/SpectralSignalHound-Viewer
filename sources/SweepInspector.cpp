@@ -18,8 +18,7 @@ SweepInspector::~SweepInspector() {
   delete(panner);
   delete(picker);
   delete(grid);
-  delete(minfo);
-  // delete(zoomer);
+  delete(zoomer);
 }
 SweepInspector::SweepInspector(QWidget *parent) : QwtPlot(parent), data(NULL), d_curve(NULL), picker(NULL) {
   setObjectName( "SweepData" );
@@ -39,14 +38,14 @@ SweepInspector::SweepInspector(QWidget *parent) : QwtPlot(parent), data(NULL), d
   setCanvas(canvas);
 
   //Allow zooming / panning
-  // zoomer = new QwtPlotZoomer( canvas );
-  // zoomer->setRubberBandPen( QColor( Qt::white ) );
-  // zoomer->setTrackerPen( QColor( Qt::white ) );
+  zoomer = new QwtPlotZoomer( canvas );
+  zoomer->setRubberBandPen( QColor( Qt::white ) );
+  zoomer->setTrackerPen( QColor( Qt::white ) );
   panner = new QwtPlotPanner( canvas );
   panner->setMouseButton( Qt::MidButton );
 
   //Show the X/Y markers that follow the mouse
-  QwtPlotPicker *picker = new QwtPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn, canvas);
+  picker = new QwtPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn, canvas);
   picker->setStateMachine( new QwtPickerTrackerMachine() );
   picker->setRubberBandPen( QColor( Qt::cyan ) );
   picker->setTrackerPen( QColor( Qt::cyan ) );
@@ -64,7 +63,8 @@ SweepInspector::SweepInspector(QWidget *parent) : QwtPlot(parent), data(NULL), d
 
   //format in kHz, MHz, GHz, not raw values
   setAxisScaleDraw(QwtPlot::xBottom, new FreqScaleDraw);
-  setAxisScale(QwtPlot::xBottom, 1, 4.4e9, 4.4e9 / 5.0);
+  setAxisAutoScale(QwtPlot::xBottom, true);
+  //setAxisScale(QwtPlot::xBottom, 1, 4.4e9, 4.4e9 / 5.0);
   setAxisScale(QwtPlot::yLeft, -135, 20, 20.0);
   repaint();
   replot();
@@ -89,34 +89,13 @@ void SweepInspector::loadSweep(int index) {
   d_curve->setSamples( sweep );
   d_curve->attach(this);
 
-  //delete(picker);
-  //picker = new FreqdBmPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn, canvas);
-  //connect(picker, SIGNAL(selected(QPointF)), this, SLOT(moved(QPointF)));
-
-  // picker = new FreqdBmPicker(canvas);
-  // picker->setStateMachine( new QwtPickerTrackerMachine() );
-  // picker->setRubberBandPen( QColor( Qt::cyan ) );
-
-  // TimeFreqPicker pkr(canvas());
-  // pkr.setStateMachine( new QwtPickerTrackerMachine() );
-  // pkr.setRubberBandPen( QColor( Qt::cyan ) );
-  // picker->setTrackerPen( QColor( Qt::cyan ) );
-
-  // picker = new DistancePicker(canvas);
-  // picker2 = new TimeFreqPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn, canvas);
-  // pkr.setMousePattern( QwtPlotPicker::MouseSelect1, Qt::RightButton );
-  // picker->setRubberBandPen( QPen( Qt::blue ) );
-
-  // TimeFreqPicker pkr(canvas());
-  //picker2 = new FreqdBmPicker(canvas());
-
   QwtInterval frange = data->limits(FREQ);
   setAxisScale(QwtPlot::xBottom, frange.minValue(), frange.maxValue(), (frange.maxValue() - frange.minValue())/ 5.0);
   setAxisScale(QwtPlot::yLeft, -135, 20, 10.0);
   setTitle( QString("RF Sweep @ %1").arg(data->timestampFromIndex(index)) );
   //set maximum zoom out
-  // zoomer->setZoomBase(QRectF(QPointF(frange.minValue(), 20), QPointF(frange.maxValue(), -135)));
-  // zoomer->zoomBase();
+  zoomer->setZoomBase(QRectF(QPointF(frange.minValue(), 20), QPointF(frange.maxValue(), -135)));
+  zoomer->zoomBase();
 
   //find max, min, and average values and drop it on plot as well
   double max = sweep.first().y(), min = sweep.first().y(), avg=0;
@@ -127,6 +106,7 @@ void SweepInspector::loadSweep(int index) {
   } avg /= sweep.size();
 
   //add markers onto the plot
+  QwtPlotMarker *minfo, *mmeta;
   QwtText tinfo = QwtText(QString("Max: %1 dBm\tMin: %2 dBm\tAvg: %3 dBm").arg(max).arg(min).arg(avg));
   tinfo.setFont( QFont( "Helvetica", 10, QFont::Bold ) );
   tinfo.setColor( Qt::green );
@@ -135,6 +115,18 @@ void SweepInspector::loadSweep(int index) {
   minfo->attach(this);
   minfo->setLabel(tinfo);
   minfo->setValue(frange.minValue() + (frange.maxValue() - frange.minValue())/2, -135); 
+
+  //plot the trace metadata directly on the graph
+  QwtText tmeta(data->plotText());
+  tmeta.setFont( QFont( "Helvetica", 10, QFont::Normal ) );
+  tmeta.setColor( Qt::white );
+  //tmeta.setRenderFlags(Qt::AlignTop | Qt::AlignRight);
+  tmeta.setRenderFlags(Qt::AlignLeft | Qt::AlignBottom);
+  mmeta = new QwtPlotMarker(tmeta);
+  mmeta->attach(this);
+  mmeta->setLabel(tmeta);
+  mmeta->setLabelAlignment(Qt::AlignBottom | Qt::AlignRight);
+  mmeta->setValue(frange.minValue(), 20);
   replot();
   repaint();
 }

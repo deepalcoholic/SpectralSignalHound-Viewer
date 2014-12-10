@@ -15,6 +15,7 @@
 #include <QtCore>
 #include <QtWidgets>
 #include <QFileDialog>
+#include <QTextStream>
 #include "ui_SweepMainWin.h"
 #include "SweepInspector.h"
 
@@ -28,11 +29,9 @@ public slots:
   void openDB(void);
   void saveCSV(void);
   void saveImg(void);
-  void logFreq(bool);
   void nextSqlTable(QString);
   
 private:
-
   void muteSql(bool mute = true);
   void updateMetadata();
 

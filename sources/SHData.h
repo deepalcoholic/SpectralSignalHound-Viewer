@@ -24,6 +24,7 @@
 #include <QDateTime>
 #include <QVector>
 #include <QPointF>
+#include <QFileInfo>
 #include <qwt_interval.h>
 #include <qwt_raster_data.h>
 
@@ -51,7 +52,11 @@ class QHoundData: public QwtRasterData {
     QwtInterval limits(RangeType); 
     fsweep getSweep(int);
     int getNumSweeps();
-    QStringList sqlMetadata();
+    QString plotText();
+    QStringList sqlMetadata();    // stxxl_vdouble sweep_data;
+    // vdouble freqs;
+    // vdouble temperatures;
+    // vdouble timestamps;
 
   private:
     int closest(fseek_locs, double) const;
@@ -63,11 +68,7 @@ class QHoundData: public QwtRasterData {
     fseek_locs locs;
     vdouble freqs;
     vdouble temps;
-
-    
-
-    int single_sweep_length;
-
+    int single_sweep_length, curr_sweep_index;
 
     // stxxl_vdouble sweep_data;
     // vdouble freqs;
