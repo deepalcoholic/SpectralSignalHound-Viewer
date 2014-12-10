@@ -13,10 +13,9 @@
 #define QT_STATIC_CONST static const
 #endif
 #include <cmath>
-#include "ui_SweepInspector.h"
-//#include "SweepInspector.moc"
 #include <QtWidgets>
 #include <QtCore>
+#include <qwt_plot.h>
 #include <qwt_plot_canvas.h>
 #include <qwt_plot_curve.h>
 #include <qwt_plot_grid.h>
@@ -30,17 +29,15 @@
 #include "helpers.h"
 #include "SHData.h"
 
-class SweepInspector:public QWidget, public Ui::sweepinspector {
+class SweepInspector: public QwtPlot {
 Q_OBJECT
 public:
   ~SweepInspector();
   explicit SweepInspector(QWidget *parent = 0);
+  void loadSweep(int);
   void setpData(QHoundData *);
   void save(QString);
-public slots:
-  void sliderMoved(int);
-  void loadSweep(int);
-  void moved(QPointF);
+
 private:
   QHoundData * data;
   QwtPlotCurve *d_curve;

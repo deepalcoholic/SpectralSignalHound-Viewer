@@ -12,8 +12,6 @@
 #ifndef QT_STATIC_CONST
 #define QT_STATIC_CONST static const
 #endif
-#include "ui_SpectralInspector.h"
-//#include "SpectralInspector.moc"
 #include <QtWidgets>
 #include <QtCore>
 #include <qwt_color_map.h>

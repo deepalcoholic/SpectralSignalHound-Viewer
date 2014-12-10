@@ -41,10 +41,11 @@ SET(SRC
 	sources/SHData.cpp sources/SHData.h
 	sources/helpers.cpp sources/helpers.h
 	sources/SweepInspector.cpp sources/SweepInspector.h
-	sources/SpectralInspector.cpp sources/SpectralInspector.h
+#	sources/SpectralInspector.cpp sources/SpectralInspector.h
+	res/resources.qrc
 	)
 
-SET(SWEEP_SRC sources/main-sweep.cpp)
+SET(SWEEP_SRC sources/main-sweep.cpp sources/SweepMainWin.h sources/SweepMainWin.cpp)
 SET(SPECT_SRC sources/main-spect.cpp)
 
 # Use the Widgets module from Qt 5.
