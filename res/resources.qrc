@@ -1,0 +1,10 @@
+<RCC>
+  <qresource prefix="/">
+    <file>exit.png</file>
+    <file>save.png</file>
+    <file>about.png</file>
+    <file>binary.png</file>
+    <file>csv.png</file>
+    <file>database.png</file>
+  </qresource>
+</RCC>
