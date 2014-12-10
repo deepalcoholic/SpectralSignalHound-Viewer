@@ -29,6 +29,7 @@ public slots:
   void saveCSV(void);
   void saveImg(void);
   void logFreq(bool);
+  void nextSqlTable(QString);
   
 private:
 

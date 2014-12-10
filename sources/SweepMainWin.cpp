@@ -34,6 +34,7 @@ SweepMainWin::SweepMainWin(QMainWindow *parent) : QMainWindow(parent), data(NULL
 
   timeIndex->setMinimum(0);
   connect(timeIndex, SIGNAL(valueChanged(int)), plot, SLOT(loadSweep(int)));
+  connect(sqlTables, SIGNAL(currentIndexChanged(QString)), this, SLOT(nextSqlTable(QString)));
 }
 void SweepMainWin::muteSql(bool mute) {
   //disable the SQL only fields
@@ -47,8 +48,9 @@ void SweepMainWin::muteSql(bool mute) {
     i->setDisabled(mute);
     i->setHidden(mute); 
   }
-  sqlbox->setDisabled(mute);
-  sqlbox->setHidden(mute);
+
+  sqlbox->setDisabled(sqlTables->count() == 0);
+  sqlbox->setHidden(sqlTables->count() == 0);
 }
 void SweepMainWin::updateMetadata() {
   //get max and mins setup
@@ -69,8 +71,10 @@ void SweepMainWin::updateMetadata() {
 
   qint64 dur = begin.msecsTo(end);
   _runtime->setText(QString::number(dur/1000.0));
-  _samples->setText(QString::number(data->getSweep(0).size()));
   _sweeps->setText(QString::number(data->getNumSweeps()));
+  if (data->getNumSweeps() != 0)
+    _samples->setText(QString::number(data->getSweep(0).size()));
+  
 
   //fetch metadata if it exists
   QStringList metadata = data->sqlMetadata();
@@ -93,7 +97,22 @@ void SweepMainWin::openCSV(void) {
   updateMetadata();
 }
 void SweepMainWin::openDB(void) {
-
+   /*Open a previously recorded CSV data file*/
+  QString fname =  QFileDialog::getOpenFileName(this,"Open Signal Hound Database Recording", QString(),"Spectral Signal Hound Database Recordings (*.db *.dat *.sshdata *.sqlite *.sql);;All Files (*)", 0, QFileDialog::ReadOnly);
+  if (fname == "") return;
+  if (!data->openSQL(fname)) {
+    openedFile->setText(QString("Unable to open %1").arg(fname));
+  }
+  openedFile->setText(fname);
+  sqlTables->clear();
+  sqlTables->addItems(data->SQLTables());
+  sqlTables->setCurrentIndex(-1);
+  updateMetadata();
+}
+void SweepMainWin::nextSqlTable(QString newtable) {
+  if (newtable == "") return;
+  if (data->setSQLTable(newtable)) return;
+  qDebug() << " Unable to open table" << newtable;
 }
 void SweepMainWin::saveCSV(void) {
 

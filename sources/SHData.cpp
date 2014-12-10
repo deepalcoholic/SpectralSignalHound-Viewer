@@ -80,11 +80,11 @@ int QHoundData::closest(vdouble haystack, double needle) const {
 }
 
 QDateTime QHoundData::dateTimeFromIndex(unsigned int index) {
-	if (index > locs.size()) return QDateTime();
+	if ( (locs.size() == 0) || (index >= locs.size())) return QDateTime();
 	return QDateTime::fromMSecsSinceEpoch((qint64) (locs.at(index).first * 1000));
 }
 QString QHoundData::timestampFromIndex(unsigned int index) {
-	if (index > locs.size()) return "";
+	if ( (locs.size() == 0) || (index >= locs.size())) return "";
 	return dateTimeFromIndex(index).toString("yyyy-MM-dd HH:mm:ss.zzz");
 }
 QwtInterval QHoundData::limits(RangeType which) {
@@ -105,6 +105,7 @@ bool QHoundData::openCSV(QString csvfilename) {
 	/**Open the CSV file for random access.*/
 	if (db.isOpen()) db.close();
 	if (csv->isOpen()) csv->close();
+	currentTable="";
 	csv->setFileName(csvfilename);
 	if (!csv->open(QIODevice::ReadOnly | QIODevice::Text)) return false;
 	locs.clear(); locs.reserve(RESERVE_SIZE);
@@ -127,7 +128,11 @@ bool QHoundData::openCSV(QString csvfilename) {
 bool QHoundData::openSQL(QString sqlfilename) {
 	if (db.isOpen()) db.close();
 	if (csv->isOpen()) csv->close();
+	locs.clear(); locs.reserve(RESERVE_SIZE);
+	temps.clear(); temps.reserve(RESERVE_SIZE);
+	freqs.clear(); freqs.reserve(20000);
 	db.setDatabaseName(sqlfilename);
+	qDebug() << "QHoundData::openSQL> Oke";
  	return db.open();
 }
 
@@ -225,10 +230,15 @@ fsweep QHoundData::getSweep(int index) {
 QStringList QHoundData::sqlMetadata() {
 	QStringList rtn;
 	if (!db.isOpen()) return rtn;
+	if (currentTable == "") return rtn;
 	QSqlQuery query(db);
-	if (query.exec("SELECT m_RBWSetpoint, m_VBWSetpoint, m_ZSMode, m_UseExtRef, m_PreampOn, m_stepFreq, m_stepAmpl, m_refLevel, m_refLevelOffset, m_refUnitsmV, m_decimation, m_sweepMode, m_sweepTime, m_FFTSize, m_channelBW, m_channelSpacing, m_serialNumber, m_HzPerPt from sweep_metadata WHERE data_table='" + currentTable + "'"))
+	if (query.exec("SELECT m_RBWSetpoint, m_VBWSetpoint, m_ZSMode, m_UseExtRef, m_PreampOn, m_stepFreq, m_stepAmpl, m_refLevel, m_refLevelOffset, m_refUnitsmV, m_decimation, m_sweepMode, m_sweepTime, m_FFTSize, m_channelBW, m_channelSpacing, m_serialNumber, m_HzPerPt from sweep_metadata WHERE data_table='" + currentTable + "'")) {
+		query.next();
 		for(int i=0; i<18; i++)
 			rtn << query.value(i).toString();
+	} else {
+		qDebug() << "Unable to pull metadata :" << query.lastError();
+	}
 	return rtn;
 }
 

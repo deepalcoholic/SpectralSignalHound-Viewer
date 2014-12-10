@@ -175,7 +175,11 @@
              <number>1</number>
             </property>
             <item row="0" column="0">
-             <widget class="QComboBox" name="sqlTables"/>
+             <widget class="QComboBox" name="sqlTables">
+              <property name="maxVisibleItems">
+               <number>40</number>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
