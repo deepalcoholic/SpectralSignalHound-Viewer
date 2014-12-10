@@ -16,16 +16,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="1">
-     <widget class="QSlider" name="timeIndex">
-      <property name="sliderPosition">
-       <number>7</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
     <item row="0" column="2">
      <widget class="QToolButton" name="nextTime">
       <property name="text">
@@ -48,6 +38,16 @@
     </item>
     <item row="1" column="0" colspan="3">
      <widget class="SweepInspector" name="plot"/>
+    </item>
+    <item row="0" column="1">
+     <widget class="QSlider" name="timeIndex">
+      <property name="sliderPosition">
+       <number>7</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -117,7 +117,7 @@
           <x>0</x>
           <y>0</y>
           <width>244</width>
-          <height>699</height>
+          <height>703</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_9">
@@ -130,10 +130,7 @@
          <item row="1" column="0">
           <widget class="QGroupBox" name="_limit_time">
            <property name="title">
-            <string>Time Limits</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
+            <string>Sweep Time</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_3">
             <property name="margin">
@@ -144,6 +141,9 @@
             </property>
             <item row="0" column="0">
              <widget class="QDateTimeEdit" name="_max_time">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
               <property name="displayFormat">
                <string>yyyy-MM-dd hh:mm.zzz</string>
               </property>
@@ -151,6 +151,9 @@
             </item>
             <item row="1" column="0">
              <widget class="QDateTimeEdit" name="_min_time">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
               <property name="displayFormat">
                <string>yyyy-MM-dd hh:mm.zzz</string>
               </property>
@@ -160,7 +163,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QGroupBox" name="groupBox_4">
+          <widget class="QGroupBox" name="sqlbox">
            <property name="title">
             <string>SQL Table Selector</string>
            </property>
@@ -172,7 +175,7 @@
              <number>1</number>
             </property>
             <item row="0" column="0">
-             <widget class="QComboBox" name="comboBox"/>
+             <widget class="QComboBox" name="sqlTables"/>
             </item>
            </layout>
           </widget>
@@ -181,9 +184,6 @@
           <widget class="QGroupBox" name="_limit_freq">
            <property name="title">
             <string>Frequency Limits</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
            </property>
            <layout class="QGridLayout" name="gridLayout_5">
             <property name="margin">
@@ -194,6 +194,9 @@
             </property>
             <item row="1" column="0">
              <widget class="QDoubleSpinBox" name="_min_freq">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
               <property name="suffix">
                <string> Hz</string>
               </property>
@@ -207,6 +210,9 @@
             </item>
             <item row="0" column="0">
              <widget class="QDoubleSpinBox" name="_max_freq">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
               <property name="suffix">
                <string> Hz</string>
               </property>
@@ -233,57 +239,71 @@
             <property name="spacing">
              <number>1</number>
             </property>
-            <item row="15" column="0">
-             <widget class="QLabel" name="_db_7">
-              <property name="text">
-               <string>Ref Level Offset</string>
+            <item row="3" column="0" colspan="2">
+             <widget class="Line" name="line">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="1">
+             <widget class="QLineEdit" name="_dbv_4">
+              <property name="readOnly">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
             <item row="16" column="0">
              <widget class="QLabel" name="_db_8">
               <property name="text">
+               <string>Ref Level Offset</string>
+              </property>
+             </widget>
+            </item>
+            <item row="17" column="0">
+             <widget class="QLabel" name="_db_9">
+              <property name="text">
                <string>Ref Level Unit (mV)</string>
               </property>
              </widget>
             </item>
-            <item row="8" column="0">
-             <widget class="QLabel" name="_db_2">
+            <item row="9" column="0">
+             <widget class="QLabel" name="_db_4">
               <property name="text">
                <string>Preamp On</string>
               </property>
              </widget>
             </item>
-            <item row="5" column="0">
-             <widget class="QLabel" name="_db_12">
+            <item row="6" column="0">
+             <widget class="QLabel" name="_db_1">
               <property name="text">
                <string>Video Bandwidth</string>
               </property>
              </widget>
             </item>
             <item row="0" column="0">
-             <widget class="QLabel" name="label_5">
+             <widget class="QLabel" name="__adasda">
               <property name="text">
                <string>Run Time</string>
               </property>
              </widget>
             </item>
-            <item row="11" column="0">
-             <widget class="QLabel" name="_db_3">
+            <item row="12" column="0">
+             <widget class="QLabel" name="_db_6">
               <property name="text">
                <string>Step Amplitude</string>
               </property>
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="label_2">
+             <widget class="QLabel" name="_asdadsa">
               <property name="text">
                <string># Samples / Sweep</string>
               </property>
              </widget>
             </item>
             <item row="2" column="0">
-             <widget class="QLabel" name="label_3">
+             <widget class="QLabel" name="_asad">
               <property name="text">
                <string># Sweeps</string>
               </property>
@@ -295,223 +315,216 @@
             <item row="2" column="1">
              <widget class="QLineEdit" name="_sweeps"/>
             </item>
-            <item row="7" column="0">
-             <widget class="QLabel" name="_db_1">
+            <item row="8" column="0">
+             <widget class="QLabel" name="_db_3">
               <property name="text">
                <string>External Ref</string>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="0">
-             <widget class="QLabel" name="_db_0">
-              <property name="text">
-               <string>Sweep Method</string>
-              </property>
-             </widget>
-            </item>
-            <item row="10" column="0">
-             <widget class="QLabel" name="_db_4">
-              <property name="text">
-               <string>Step Freq</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="QLineEdit" name="_runtime"/>
             </item>
-            <item row="14" column="0">
-             <widget class="QLabel" name="_db_6">
+            <item row="11" column="0">
+             <widget class="QLabel" name="_db_5">
+              <property name="text">
+               <string>Step Freq</string>
+              </property>
+             </widget>
+            </item>
+            <item row="15" column="0">
+             <widget class="QLabel" name="_db_7">
               <property name="text">
                <string>Refrence Level</string>
               </property>
              </widget>
             </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="_db_9">
-              <property name="text">
-               <string>Resolution Bandwidth</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QLineEdit" name="_dbv_0">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="20" column="0">
-             <widget class="QLabel" name="_db_13">
-              <property name="text">
-               <string>Sweep Mode</string>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="1">
+            <item row="6" column="1">
              <widget class="QLineEdit" name="_dbv_1">
               <property name="readOnly">
                <bool>true</bool>
               </property>
              </widget>
             </item>
-            <item row="19" column="0">
+            <item row="4" column="1">
+             <widget class="QLineEdit" name="_dbv_0">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="21" column="0">
              <widget class="QLabel" name="_db_11">
+              <property name="text">
+               <string>Sweep Mode</string>
+              </property>
+             </widget>
+            </item>
+            <item row="20" column="0">
+             <widget class="QLabel" name="_db_10">
               <property name="text">
                <string>Decimation</string>
               </property>
              </widget>
             </item>
-            <item row="21" column="0">
-             <widget class="QLabel" name="_db_24">
+            <item row="22" column="0">
+             <widget class="QLabel" name="_db_12">
               <property name="text">
                <string>Sweep Time (s)</string>
               </property>
              </widget>
             </item>
-            <item row="23" column="0">
-             <widget class="QLabel" name="_db_40">
+            <item row="24" column="0">
+             <widget class="QLabel" name="_db_14">
               <property name="text">
                <string>Channel BW</string>
               </property>
              </widget>
             </item>
-            <item row="24" column="0">
-             <widget class="QLabel" name="_db_41">
+            <item row="25" column="0">
+             <widget class="QLabel" name="_db_15">
               <property name="text">
                <string>Channel Spacing</string>
               </property>
              </widget>
             </item>
-            <item row="22" column="0">
-             <widget class="QLabel" name="_db_25">
+            <item row="23" column="0">
+             <widget class="QLabel" name="_db_13">
               <property name="text">
                <string>FFT Size</string>
               </property>
              </widget>
             </item>
-            <item row="26" column="0">
-             <widget class="QLabel" name="_db_42">
-              <property name="text">
-               <string>Hertz Per Point</string>
-              </property>
-             </widget>
-            </item>
-            <item row="25" column="0">
-             <widget class="QLabel" name="_db_43">
-              <property name="text">
-               <string>Serial Number</string>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="1">
+            <item row="7" column="1">
              <widget class="QLineEdit" name="_dbv_2">
               <property name="readOnly">
                <bool>true</bool>
               </property>
              </widget>
             </item>
-            <item row="7" column="1">
+            <item row="27" column="0">
+             <widget class="QLabel" name="_db_17">
+              <property name="text">
+               <string>Hertz Per Point</string>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="1">
              <widget class="QLineEdit" name="_dbv_3">
               <property name="readOnly">
                <bool>true</bool>
               </property>
              </widget>
             </item>
-            <item row="8" column="1">
-             <widget class="QLineEdit" name="_dbv_4">
-              <property name="readOnly">
-               <bool>true</bool>
+            <item row="26" column="0">
+             <widget class="QLabel" name="_db_16">
+              <property name="text">
+               <string>Serial Number</string>
               </property>
              </widget>
             </item>
-            <item row="10" column="1">
+            <item row="11" column="1">
              <widget class="QLineEdit" name="_dbv_5">
               <property name="readOnly">
                <bool>true</bool>
               </property>
              </widget>
             </item>
-            <item row="11" column="1">
-             <widget class="QLineEdit" name="_dbv_6">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="14" column="1">
+            <item row="15" column="1">
              <widget class="QLineEdit" name="_dbv_7">
               <property name="readOnly">
                <bool>true</bool>
               </property>
              </widget>
             </item>
-            <item row="15" column="1">
-             <widget class="QLineEdit" name="_dbv_8">
+            <item row="12" column="1">
+             <widget class="QLineEdit" name="_dbv_6">
               <property name="readOnly">
                <bool>true</bool>
               </property>
              </widget>
             </item>
             <item row="16" column="1">
+             <widget class="QLineEdit" name="_dbv_8">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="17" column="1">
              <widget class="QLineEdit" name="_dbv_9">
               <property name="readOnly">
                <bool>true</bool>
               </property>
              </widget>
             </item>
-            <item row="19" column="1">
+            <item row="20" column="1">
              <widget class="QLineEdit" name="_dbv_10">
               <property name="readOnly">
                <bool>true</bool>
               </property>
              </widget>
             </item>
-            <item row="20" column="1">
+            <item row="21" column="1">
              <widget class="QLineEdit" name="_dbv_11">
               <property name="readOnly">
                <bool>true</bool>
               </property>
              </widget>
             </item>
-            <item row="21" column="1">
+            <item row="22" column="1">
              <widget class="QLineEdit" name="_dbv_12">
               <property name="readOnly">
                <bool>true</bool>
               </property>
              </widget>
             </item>
-            <item row="22" column="1">
+            <item row="23" column="1">
              <widget class="QLineEdit" name="_dbv_13">
               <property name="readOnly">
                <bool>true</bool>
               </property>
              </widget>
             </item>
-            <item row="23" column="1">
+            <item row="24" column="1">
              <widget class="QLineEdit" name="_dbv_14">
               <property name="readOnly">
                <bool>true</bool>
               </property>
              </widget>
             </item>
-            <item row="24" column="1">
+            <item row="25" column="1">
              <widget class="QLineEdit" name="_dbv_15">
               <property name="readOnly">
                <bool>true</bool>
               </property>
              </widget>
             </item>
-            <item row="25" column="1">
+            <item row="26" column="1">
              <widget class="QLineEdit" name="_dbv_16">
               <property name="readOnly">
                <bool>true</bool>
               </property>
              </widget>
             </item>
-            <item row="26" column="1">
+            <item row="27" column="1">
              <widget class="QLineEdit" name="_dbv_17">
               <property name="readOnly">
                <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="0">
+             <widget class="QLabel" name="_db_2">
+              <property name="text">
+               <string>Sweep Method</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="_db_0">
+              <property name="text">
+               <string>Resolution Bandwidth</string>
               </property>
              </widget>
             </item>
@@ -676,7 +689,7 @@ m_HzPerPt</string>
  </customwidgets>
  <tabstops>
   <tabstop>scrollArea</tabstop>
-  <tabstop>comboBox</tabstop>
+  <tabstop>sqlTables</tabstop>
   <tabstop>_limit_time</tabstop>
   <tabstop>_max_time</tabstop>
   <tabstop>_min_time</tabstop>

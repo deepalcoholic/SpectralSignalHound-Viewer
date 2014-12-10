@@ -75,6 +75,7 @@ void SweepInspector::setpData(QHoundData *newd) {
 void SweepInspector::loadSweep(int index) {
   //load in new sweep values from data
   if (data == NULL) return;
+  if ( (index < 0)  || (index >= data->getNumSweeps())) return;
 
   //remove old data and get new
   if (d_curve) d_curve->attach(NULL);

@@ -14,6 +14,7 @@
 #endif
 #include <QtCore>
 #include <QtWidgets>
+#include <QFileDialog>
 #include "ui_SweepMainWin.h"
 #include "SweepInspector.h"
 
@@ -23,7 +24,19 @@ public:
   ~SweepMainWin();
   explicit SweepMainWin(QMainWindow *parent = 0);
 public slots:
+  void openCSV(void);
+  void openDB(void);
+  void saveCSV(void);
+  void saveImg(void);
+  void logFreq(bool);
   
 private:
+
+  void muteSql(bool mute = true);
+  void updateMetadata();
+
+  QList<QLineEdit *> sqlfields;
+  QList<QLabel *> sqlLabels;
+  QLabel *openedFile;
   QHoundData *data;
 };

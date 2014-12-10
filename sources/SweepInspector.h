@@ -34,9 +34,11 @@ Q_OBJECT
 public:
   ~SweepInspector();
   explicit SweepInspector(QWidget *parent = 0);
-  void loadSweep(int);
+  
   void setpData(QHoundData *);
   void save(QString);
+private slots:
+  void loadSweep(int);
 
 private:
   QHoundData * data;

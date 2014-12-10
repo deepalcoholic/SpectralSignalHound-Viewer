@@ -79,10 +79,13 @@ int QHoundData::closest(vdouble haystack, double needle) const {
 	return index;
 }
 
+QDateTime QHoundData::dateTimeFromIndex(unsigned int index) {
+	if (index > locs.size()) return QDateTime();
+	return QDateTime::fromMSecsSinceEpoch((qint64) (locs.at(index).first * 1000));
+}
 QString QHoundData::timestampFromIndex(unsigned int index) {
-	if (index > locs.size())
-		return "";
-	return QDateTime::fromMSecsSinceEpoch((qint64) (locs.at(index).first * 1000)).toString("yyyy-MM-dd HH:mm:ss.zzz");
+	if (index > locs.size()) return "";
+	return dateTimeFromIndex(index).toString("yyyy-MM-dd HH:mm:ss.zzz");
 }
 QwtInterval QHoundData::limits(RangeType which) {
 	QwtInterval rtn(-std::numeric_limits<double>::max(), -std::numeric_limits<double>::max());
@@ -216,6 +219,16 @@ fsweep QHoundData::getSweep(int index) {
 			qDebug() << "Unable to pull sweep from database:" << query.lastError();
 		}
 	}
+	return rtn;
+}
+
+QStringList QHoundData::sqlMetadata() {
+	QStringList rtn;
+	if (!db.isOpen()) return rtn;
+	QSqlQuery query(db);
+	if (query.exec("SELECT m_RBWSetpoint, m_VBWSetpoint, m_ZSMode, m_UseExtRef, m_PreampOn, m_stepFreq, m_stepAmpl, m_refLevel, m_refLevelOffset, m_refUnitsmV, m_decimation, m_sweepMode, m_sweepTime, m_FFTSize, m_channelBW, m_channelSpacing, m_serialNumber, m_HzPerPt from sweep_metadata WHERE data_table='" + currentTable + "'"))
+		for(int i=0; i<18; i++)
+			rtn << query.value(i).toString();
 	return rtn;
 }
 

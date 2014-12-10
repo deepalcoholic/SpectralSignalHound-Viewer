@@ -46,10 +46,12 @@ class QHoundData: public QwtRasterData {
     bool setSQLTable(QString);
     QStringList SQLTables();
     virtual double value(double, double) const;
+    QDateTime dateTimeFromIndex(unsigned int);
     QString timestampFromIndex(unsigned int);
     QwtInterval limits(RangeType); 
     fsweep getSweep(int);
     int getNumSweeps();
+    QStringList sqlMetadata();
 
   private:
     int closest(fseek_locs, double) const;
