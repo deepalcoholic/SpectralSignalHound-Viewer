@@ -13,10 +13,11 @@
 #include <limits> //for error values
 #include <iterator> //for std::distance
 #include <vector>
+#include <assert.h>
 #include <algorithm>
-#include <stxxl/vector>
-#include <stxxl/random>
-#include <stxxl/sort>
+// #include <stxxl/vector>
+// #include <stxxl/random>
+// #include <stxxl/sort>
 #include <QDebug>
 #include <QFile>
 #include <QtSql>
@@ -28,7 +29,7 @@
 
 #define RESERVE_SIZE 350000
 
-typedef stxxl::VECTOR_GENERATOR<double>::result stxxl_vdouble;
+// typedef stxxl::VECTOR_GENERATOR<double>::result stxxl_vdouble;
 typedef std::vector<double> vdouble;
 typedef QVector<QPointF> fsweep;
 typedef std::pair<double, double> range;

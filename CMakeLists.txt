@@ -21,9 +21,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall") # enable warnings (always goo
 
 project(ssh-viewer)
 
-add_subdirectory(stxxl) # include the STXXL library in my-project
-include_directories(${STXXL_INCLUDE_DIRS}) # add STXXL includes path
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${STXXL_CXX_FLAGS}") # apply STXXL CXXFLAGS to our configuration
+#add_subdirectory(stxxl) # include the STXXL library in my-project
+#include_directories(${STXXL_INCLUDE_DIRS}) # add STXXL includes path
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${STXXL_CXX_FLAGS}") # apply STXXL CXXFLAGS to our configuration
 
 #use our own mirror of a built qwt
 set(QWT_INCLUDE_DIR qwt/include)
@@ -37,13 +37,15 @@ LINK_DIRECTORIES(qwt/lib) #somehow I need to explicitly set this
 INCLUDE_DIRECTORIES(${INCLUDE_DIRECTORIES} ${CMAKE_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${INCLUDE_DIRECTORIES} ${QWT_INCLUDE_DIR})
 
-SET(SRC 
-	sources/main.cpp
+SET(SRC
 	sources/SHData.cpp sources/SHData.h
 	sources/helpers.cpp sources/helpers.h
 	sources/SweepInspector.cpp sources/SweepInspector.h
 	sources/SpectralInspector.cpp sources/SpectralInspector.h
 	)
+
+SET(SWEEP_SRC sources/main-sweep.cpp)
+SET(SPECT_SRC sources/main-spect.cpp)
 
 # Use the Widgets module from Qt 5.
 MESSAGE( STATUS "QWT_FOUND: " ${QWT_FOUND})
@@ -56,8 +58,11 @@ MESSAGE( STATUS "Sources: " ${SRC})
 
 
 # Tell CMake to create the executable
-add_executable(ssh-viewer ${SRC} ${UIS_HDRS})
+add_executable(ssh-sweep-viewer ${SWEEP_SRC} ${SRC} ${UIS_HDRS})
+qt5_use_modules(ssh-sweep-viewer Widgets Sql Core)
+target_link_libraries(ssh-sweep-viewer Qt5::Widgets Qt5::Sql -lqwt)
+#target_link_libraries(ssh-sweep-viewer Qt5::Widgets Qt5::Sql -lqwt ${STXXL_LIBRARIES})
 
-qt5_use_modules(ssh-viewer Widgets Sql Core)
-
-target_link_libraries(ssh-viewer Qt5::Widgets Qt5::Sql -lqwt ${STXXL_LIBRARIES})
+#add_executable(ssh-spectrviewer ${SPECT_SRC} ${SRC} ${UIS_HDRS})
+#qt5_use_modules(ssh-viewer Widgets Sql Core)
+#target_link_libraries(ssh-viewer Qt5::Widgets Qt5::Sql -lqwt ${STXXL_LIBRARIES})

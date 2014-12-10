@@ -47,7 +47,6 @@ FreqdBmPicker::FreqdBmPicker(int x, int y, RubberBand rb, DisplayMode dm, QWidge
   setStateMachine( new QwtPickerTrackerMachine() );
   setTrackerPen(QColor(Qt::cyan));
   setRubberBandPen(QColor(Qt::cyan));
-  qDebug() << isEnabled();
   setEnabled(true);
 }
 FreqdBmPicker::FreqdBmPicker( QWidget *canvas ): QwtPlotPicker( canvas ) {
@@ -56,11 +55,9 @@ FreqdBmPicker::FreqdBmPicker( QWidget *canvas ): QwtPlotPicker( canvas ) {
   setStateMachine( new QwtPickerTrackerMachine() );
   setTrackerPen(QColor(Qt::cyan));
   setRubberBandPen(QColor(Qt::cyan));
-  qDebug() << isEnabled();
   setEnabled(true);
 }
 QwtText FreqdBmPicker::trackerText( const QPoint &pos ) const {
-  qDebug() << "Here";
   return trackerTextF(pos);
 }
 QwtText FreqdBmPicker::trackerTextF( const QPointF &pos ) const {
@@ -97,7 +94,6 @@ TimeFreqPicker::TimeFreqPicker( QWidget *canvas ): QwtPlotPicker( canvas ) {
   setTrackerPen(QColor(Qt::black));
   setRubberBandPen(QColor(Qt::black));
   QwtPicker::setEnabled( true );
-  qDebug() << "Picker created" << this;
 }
 QwtText TimeFreqPicker::trackerTextF( const QPointF &pos ) const {
   QString rtn = QDateTime::fromMSecsSinceEpoch((qint64) (pos.x()*1000)).toString("yyyy-MM-dd  %2\nHH:mm:ss.zzz");
