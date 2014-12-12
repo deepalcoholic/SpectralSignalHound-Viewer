@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
+    <file>sshv.png</file>
     <file>image.png</file>
     <file>exit.png</file>
     <file>save.png</file>
