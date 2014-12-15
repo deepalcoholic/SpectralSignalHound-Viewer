@@ -119,3 +119,8 @@ QwtText TimeFreqPicker::trackerTextF( const QPointF &pos ) const {
   r.setBackgroundBrush(QBrush(bgColor));
   return r;
 }
+
+
+SweepAbout::SweepAbout(QDialog *d): QDialog(d) {
+  setupUi(this);
+}

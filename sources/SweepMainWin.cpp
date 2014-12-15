@@ -11,7 +11,10 @@
 #include "SweepMainWin.h"
 
 
-SweepMainWin::~SweepMainWin() { }
+SweepMainWin::~SweepMainWin() {
+	delete(browser);
+
+}
 SweepMainWin::SweepMainWin(QMainWindow *parent) : QMainWindow(parent), data(NULL) {
   setupUi(this);
 
@@ -20,6 +23,8 @@ SweepMainWin::SweepMainWin(QMainWindow *parent) : QMainWindow(parent), data(NULL
   connect(act_open_db, SIGNAL(triggered()), this, SLOT(openDB()));
   connect(act_saveCsv, SIGNAL(triggered()), this, SLOT(saveCSV()));
   connect(act_savePng, SIGNAL(triggered()), this, SLOT(saveImg()));
+  connect(act_manual,  SIGNAL(triggered()), this, SLOT(showManual()));
+  connect(act_about,  SIGNAL(triggered()), this, SLOT(about()));
 
   //disable all the SQL stuff until we actual open a database
   sqlfields << _dbv_0 << _dbv_1<< _dbv_2<< _dbv_3<< _dbv_4<< _dbv_5<< _dbv_6<< _dbv_7<< _dbv_8<< _dbv_9<< _dbv_10<< _dbv_11<< _dbv_12<< _dbv_13<< _dbv_14<< _dbv_15<< _dbv_16<< _dbv_17;
@@ -34,6 +39,13 @@ SweepMainWin::SweepMainWin(QMainWindow *parent) : QMainWindow(parent), data(NULL
   timeIndex->setMinimum(0);
   index->setMinimum(0);
   connect(timeIndex, SIGNAL(valueChanged(int)), plot, SLOT(loadSweep(int)));
+
+  QFile html(":/manual.html");
+  html.open(QIODevice::ReadOnly);
+  QString d = html.readAll();
+  browser = new QTextBrowser(0);
+  browser->setVisible(false);
+  browser->setHtml(d);
 }
 void SweepMainWin::muteSql(bool mute) {
   //disable the SQL only fields
@@ -150,4 +162,12 @@ void SweepMainWin::saveImg(void) {
   if (filter.contains(jpegExt)) qPix.save(fn + ".jpeg", "JPEG");
   if (filter.contains(pngExt) ) qPix.save(fn + ".png", "PNG");
   if (filter.contains(bmpExt) ) qPix.save(fn + ".bmp", "BMP");
+}
+void SweepMainWin::showManual(void) {
+  //show manual
+  browser->setVisible(!browser->isVisible());
+}
+void SweepMainWin::about(void) {
+	SweepAbout abt;
+	abt.exec();
 }

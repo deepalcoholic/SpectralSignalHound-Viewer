@@ -18,6 +18,8 @@
 #include <qwt_picker_machine.h>
 #include <qwt_scale_draw.h>
 #include <QDateTime>
+#include <QDialog>
+#include "ui_SweepAbout.h"
 
 //formats 403239422 as 403.2MHz
 class FreqScaleDraw : public QwtScaleDraw {
@@ -52,4 +54,10 @@ public:
 	TimeFreqPicker(int xAxis, int yAxis, RubberBand rubberBand, DisplayMode trackerMode, QWidget* canvas);
 //protected:
 	virtual QwtText trackerTextF( const QPointF &pos ) const;
+};
+
+class SweepAbout:public QDialog, public Ui::SSHSWA {
+Q_OBJECT
+public:
+	SweepAbout(QDialog *d = 0);
 };

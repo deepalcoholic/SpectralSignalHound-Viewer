@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
+    <file>manual.png</file>
     <file>sshv.png</file>
     <file>image.png</file>
     <file>exit.png</file>
@@ -9,5 +10,6 @@
     <file>csv.png</file>
     <file>database.png</file>
     <file>xaxis.png</file>
+    <file>manual.html</file>
   </qresource>
 </RCC>

@@ -16,6 +16,9 @@
 #include <QtWidgets>
 #include <QFileDialog>
 #include <QTextStream>
+#include <QDialog>
+#include <QTextBrowser>
+
 #include "ui_SweepMainWin.h"
 #include "SweepInspector.h"
 
@@ -30,6 +33,8 @@ public slots:
   void saveCSV(void);
   void saveImg(void);
   void nextSqlTable(QString);
+  void showManual(void);
+  void about(void);
   
 private:
   void muteSql(bool mute = true);
@@ -39,4 +44,5 @@ private:
   QList<QLabel *> sqlLabels;
   QLabel *openedFile;
   QHoundData *data;
+  QTextBrowser *browser;
 };
