@@ -91,6 +91,9 @@ void SweepMainWin::updateMetadata() {
   QStringList metadata = data->sqlMetadata();
   for(int i=0; i<metadata.size(); i++)
     sqlfields.at(i)->setText(metadata.at(i));
+  //fix RBW / VBW fields
+  _dbv_0->setText(SignalHoundRWBLookup(_dbv_0->text()));
+  _dbv_1->setText(SignalHoundRWBLookup(_dbv_1->text()));
   muteSql( ! ((metadata.size() == 18 && sqlTables->count() != 0)) ) ;
   timeIndex->setValue(0);
   plot->loadSweep(0);

@@ -61,3 +61,6 @@ Q_OBJECT
 public:
 	SweepAbout(QDialog *d = 0);
 };
+
+
+QString SignalHoundRWBLookup(QString);

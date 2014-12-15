@@ -116,11 +116,46 @@ QwtText TimeFreqPicker::trackerTextF( const QPointF &pos ) const {
   QwtText r(rtn);
   QColor bgColor(Qt::black);
   bgColor.setAlpha(160);
-  r.setBackgroundBrush(QBrush(bgColor));
+  r.setBackgroundBrush( QBrush(bgColor));
   return r;
 }
 
 
 SweepAbout::SweepAbout(QDialog *d): QDialog(d) {
   setupUi(this);
+}
+
+
+QString SignalHoundRWBLookup(QString settings) {
+  bool ok;
+  int v = settings.toInt(&ok);
+  if (!ok) return "??";
+  //2 and 24 18 = 6.4 Hz\n19 = 3.2 Hz\n20 = 1.6 Hz\n21 = .8 Hz\n22 = .4 Hz\n23 = .2 Hz\n24 = .1 Hz")
+  QString rtn = "??";
+  switch(v) {
+    case  2: rtn = "5 MHz"; break;
+    case  3: rtn = "250 kHz"; break;
+    case  4: rtn = "100 kHz"; break;
+    case  5: rtn = "50 kHz"; break;
+    case  6: rtn = "25 kHz"; break;
+    case  7: rtn = "12.5 kHz"; break;
+    case  8: rtn = "6.4 kHz"; break;
+    case  9: rtn = "3.2 kHz"; break;
+    case 10: rtn = "1.6 kHz"; break;
+    case 11: rtn = "800 Hz"; break;
+    case 12: rtn = "400 Hz"; break;
+    case 13: rtn = "200 Hz"; break;
+    case 14: rtn = "100 Hz"; break;
+    case 15: rtn = "50 Hz"; break;
+    case 16: rtn = "25 Hz"; break;
+    case 17: rtn = "12.5 Hz"; break;
+    case 18: rtn = "6.4 Hz"; break;
+    case 19: rtn = "3.2 Hz"; break;
+    case 20: rtn = "1.6 Hz"; break;
+    case 21: rtn = ".8 Hz"; break;
+    case 22: rtn = ".4 Hz"; break;
+    case 23: rtn = ".2 Hz"; break;
+    case 24: rtn = ".1 Hz"; break;
+  }
+  return rtn;
 }
