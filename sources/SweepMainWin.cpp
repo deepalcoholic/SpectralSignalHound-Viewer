@@ -169,6 +169,8 @@ void SweepMainWin::saveImg(void) {
 void SweepMainWin::showManual(void) {
   //show manual
   browser->setVisible(!browser->isVisible());
+  if (browser->isVisible())
+    browser->setMinimumSize(1000, 600);
 }
 void SweepMainWin::about(void) {
 	SweepAbout abt;

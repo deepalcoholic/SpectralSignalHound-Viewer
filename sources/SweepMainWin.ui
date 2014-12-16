@@ -697,7 +697,10 @@
      <normaloff>:/manual.png</normaloff>:/manual.png</iconset>
    </property>
    <property name="text">
-    <string>Manual</string>
+    <string>Info</string>
+   </property>
+   <property name="toolTip">
+    <string>Info</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+?</string>
