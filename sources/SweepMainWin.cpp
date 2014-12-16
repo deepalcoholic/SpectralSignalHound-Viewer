@@ -67,10 +67,11 @@ void SweepMainWin::updateMetadata() {
   //get max and mins setup
   timeIndex->setMaximum(data->getNumSweeps());
   index->setMaximum(data->getNumSweeps());
-  QDateTime begin = data->dateTimeFromIndex(0), end=data->dateTimeFromIndex(timeIndex->maximum());
+  QDateTime begin = data->dateTimeFromIndex(0), end=data->dateTimeFromIndex(timeIndex->maximum()-1);
   _min_time->setMinimumDateTime(begin);
   _min_time->setMaximumDateTime(end);
   _min_time->setDateTime(begin);
+  qDebug() << "Begin: " << begin << " End: " << end;
   _max_time->setMinimumDateTime(begin);
   _max_time->setMaximumDateTime(end);
   _max_time->setDateTime(end);
