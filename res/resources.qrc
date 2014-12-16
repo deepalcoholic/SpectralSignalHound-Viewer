@@ -12,4 +12,11 @@
     <file>xaxis.png</file>
     <file>manual.html</file>
   </qresource>
+  <qresource prefix="/manual.d">
+    <file>01.png</file>
+    <file>02.png</file>
+    <file>03.png</file>
+    <file>04.png</file>
+    <file>05.png</file>
+  </qresource>
 </RCC>
