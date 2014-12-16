@@ -217,13 +217,13 @@ Additionally, the RBW and VBW are essentially look up table values, and are reso
 
 Or this table
 
-|Value| RBW / VBW ||Value| RBW / VBW ||Value| RBW / VBW |
-|:---:|:---------:||:---:|:---------:||:---:|:---------:|
-| 2   |5 MHz      ||10   |1.6 kHz    ||18   |6.4 Hz     |
-| 3   |250 kHz    ||11   |800 Hz     ||19   |3.2 Hz     |
-| 4   |100 kHz    ||12   |400 Hz     ||20   |1.6 Hz     |
-| 5   |50 kHz     ||13   |200 Hz     ||21   |.8 Hz      |
-| 6   |25 kHz     ||14   |100 Hz     ||22   |.4 Hz      |
-| 7   |12.5 kHz   ||15   |50 Hz      ||23   |.2 Hz      |
-| 8   |6.4 kHz    ||16   |25 Hz      ||24   |.1 Hz      |
-| 9   |3.2 kHz    ||17   |12.5 Hz    ||other| ??        |
+|Value| RBW / VBW |Value| RBW / VBW |Value| RBW / VBW |
+|:---:|:---------:|:---:|:---------:|:---:|:---------:|
+| 2   |5 MHz      |10   |1.6 kHz    |18   |6.4 Hz     |
+| 3   |250 kHz    |11   |800 Hz     |19   |3.2 Hz     |
+| 4   |100 kHz    |12   |400 Hz     |20   |1.6 Hz     |
+| 5   |50 kHz     |13   |200 Hz     |21   |.8 Hz      |
+| 6   |25 kHz     |14   |100 Hz     |22   |.4 Hz      |
+| 7   |12.5 kHz   |15   |50 Hz      |23   |.2 Hz      |
+| 8   |6.4 kHz    |16   |25 Hz      |24   |.1 Hz      |
+| 9   |3.2 kHz    |17   |12.5 Hz    |other| ??        |
