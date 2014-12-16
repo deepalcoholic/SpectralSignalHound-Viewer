@@ -162,23 +162,23 @@
             <property name="spacing">
              <number>1</number>
             </property>
-            <item row="0" column="0">
+            <item row="1" column="0">
              <widget class="QDateTimeEdit" name="_max_time">
               <property name="readOnly">
                <bool>true</bool>
               </property>
               <property name="displayFormat">
-               <string>yyyy-MM-dd hh:mm.zzz</string>
+               <string>yyyy-MM-dd hh:mm:ss.zzz</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
+            <item row="0" column="0">
              <widget class="QDateTimeEdit" name="_min_time">
               <property name="readOnly">
                <bool>true</bool>
               </property>
               <property name="displayFormat">
-               <string>yyyy-MM-dd hh:mm.zzz</string>
+               <string>yyyy-MM-dd hh:mm:ss.zzz</string>
               </property>
              </widget>
             </item>
@@ -733,7 +733,6 @@
   <tabstop>scrollArea</tabstop>
   <tabstop>sqlTables</tabstop>
   <tabstop>_max_time</tabstop>
-  <tabstop>_min_time</tabstop>
   <tabstop>_max_freq</tabstop>
   <tabstop>_min_freq</tabstop>
   <tabstop>_runtime</tabstop>

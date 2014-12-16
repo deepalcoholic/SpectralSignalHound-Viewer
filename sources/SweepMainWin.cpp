@@ -71,7 +71,6 @@ void SweepMainWin::updateMetadata() {
   _min_time->setMinimumDateTime(begin);
   _min_time->setMaximumDateTime(end);
   _min_time->setDateTime(begin);
-  qDebug() << "Begin: " << begin << " End: " << end;
   _max_time->setMinimumDateTime(begin);
   _max_time->setMaximumDateTime(end);
   _max_time->setDateTime(end);
