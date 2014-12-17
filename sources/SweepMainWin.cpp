@@ -25,6 +25,12 @@ SweepMainWin::SweepMainWin(QMainWindow *parent) : QMainWindow(parent), data(NULL
   connect(act_savePng, SIGNAL(triggered()), this, SLOT(saveImg()));
   connect(act_manual,  SIGNAL(triggered()), this, SLOT(showManual()));
   connect(act_about,  SIGNAL(triggered()), this, SLOT(about()));
+  connect(actionReset_Zoom, SIGNAL(triggered()), this, SLOT(resetZoom()));
+
+  connect(_min_freq, SIGNAL(valueChanged(double)), this, SLOT(applyZoomWindow()));
+  connect(_max_freq, SIGNAL(valueChanged(double)), this, SLOT(applyZoomWindow()));
+  connect(_min_pwr, SIGNAL(valueChanged(double)), this, SLOT(applyZoomWindow()));
+  connect(_max_pwr, SIGNAL(valueChanged(double)), this, SLOT(applyZoomWindow()));
 
   //disable all the SQL stuff until we actual open a database
   sqlfields << _dbv_0 << _dbv_1<< _dbv_2<< _dbv_3<< _dbv_4<< _dbv_5<< _dbv_6<< _dbv_7<< _dbv_8<< _dbv_9<< _dbv_10<< _dbv_11<< _dbv_12<< _dbv_13<< _dbv_14<< _dbv_15<< _dbv_16<< _dbv_17;
@@ -35,6 +41,7 @@ SweepMainWin::SweepMainWin(QMainWindow *parent) : QMainWindow(parent), data(NULL
 
   data = new QHoundData();
   plot->setpData(data);
+  connect(plot, SIGNAL(zoominated(const QRectF &)), this, SLOT(zoominated(const QRectF &)));
 
   timeIndex->setMinimum(0);
   index->setMinimum(0);
@@ -47,11 +54,29 @@ SweepMainWin::SweepMainWin(QMainWindow *parent) : QMainWindow(parent), data(NULL
   browser->setVisible(false);
   browser->setHtml(d);
 }
+void SweepMainWin::zoominated(const QRectF &rect) {
+  //zoom window changed, update freq selectors
+  qreal fmin, fmax, pmin, pmax;
+  rect.getCoords(&fmin, &pmin, &fmax, &pmax);
+  _min_freq->setValue(fmin);
+  _max_freq->setValue(fmax);
+  _min_pwr->setValue(pmin);
+  _max_pwr->setValue(pmax);
+  applyZoomWindow();
+}
+void SweepMainWin::applyZoomWindow() {
+  plot->setAxisScale(QwtPlot::xBottom, _min_freq->value(), _max_freq->value(), (_max_freq->value() - _min_freq->value())/ 5.0);
+  plot->setAxisScale(QwtPlot::yLeft, _min_pwr->value(), _max_pwr->value(), (_max_pwr->value() - _min_pwr->value()) / 10.0);
+}
+void SweepMainWin::resetZoom() {
+  //zoom all the way out
+  _min_freq->setValue(_min_freq->minimum()); _max_freq->setValue(_max_freq->maximum()); 
+  _min_pwr->setValue(_min_pwr->minimum()); _max_pwr->setValue(_max_pwr->maximum());
+}
 void SweepMainWin::muteSql(bool mute) {
   //disable the SQL only fields
   foreach(QLineEdit *i, sqlfields) {
-    if (mute)
-      i->setText("");
+    if (mute) i->setText("");
     i->setDisabled(mute);
     i->setHidden(mute);
   }
@@ -68,16 +93,17 @@ void SweepMainWin::updateMetadata() {
   timeIndex->setMaximum(data->getNumSweeps());
   index->setMaximum(data->getNumSweeps());
   QDateTime begin = data->dateTimeFromIndex(0), end=data->dateTimeFromIndex(timeIndex->maximum()-1);
-  _min_time->setMinimumDateTime(begin);
-  _min_time->setMaximumDateTime(end);
+  _min_time->setDateTimeRange(begin, end);
+  _max_time->setDateTimeRange(begin, end);
   _min_time->setDateTime(begin);
-  _max_time->setMinimumDateTime(begin);
-  _max_time->setMaximumDateTime(end);
   _max_time->setDateTime(end);
   
   //same with Frequency
   //get max and mins setup
   QwtInterval f = data->limits(FREQ);
+  _min_freq->setRange(f.minValue(), f.maxValue());
+  _max_freq->setRange(f.minValue(), f.maxValue());
+
   _min_freq->setValue(f.minValue());
   _max_freq->setValue(f.maxValue());
 
@@ -97,6 +123,7 @@ void SweepMainWin::updateMetadata() {
   muteSql( ! ((metadata.size() == 18 && sqlTables->count() != 0)) ) ;
   timeIndex->setValue(0);
   plot->loadSweep(0);
+  applyZoomWindow();
 }
 void SweepMainWin::openCSV(void) {
   /*Open a previously recorded CSV data file*/

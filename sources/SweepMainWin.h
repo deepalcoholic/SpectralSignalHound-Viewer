@@ -28,17 +28,21 @@ public:
   ~SweepMainWin();
   explicit SweepMainWin(QMainWindow *parent = 0);
 public slots:
+  void about(void);
+  void applyZoomWindow();
+  void nextSqlTable(QString);
   void openCSV(void);
   void openDB(void);
+  void resetZoom();
   void saveCSV(void);
   void saveImg(void);
-  void nextSqlTable(QString);
   void showManual(void);
-  void about(void);
+  void zoominated(const QRectF &);
   
 private:
   void muteSql(bool mute = true);
   void updateMetadata();
+
 
   QList<QLineEdit *> sqlfields;
   QList<QLabel *> sqlLabels;

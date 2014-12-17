@@ -41,6 +41,8 @@ SweepInspector::SweepInspector(QWidget *parent) : QwtPlot(parent), data(NULL), d
   zoomer = new QwtPlotZoomer( canvas );
   zoomer->setRubberBandPen( QColor( Qt::white ) );
   zoomer->setTrackerPen( QColor( Qt::white ) );
+  connect(zoomer, SIGNAL(zoomed(const QRectF &)), this, SLOT(zoomed(const QRectF &)));
+
   panner = new QwtPlotPanner( canvas );
   panner->setMouseButton( Qt::MidButton );
 
@@ -65,7 +67,11 @@ SweepInspector::SweepInspector(QWidget *parent) : QwtPlot(parent), data(NULL), d
   setAxisScaleDraw(QwtPlot::xBottom, new FreqScaleDraw);
   setAxisAutoScale(QwtPlot::xBottom, true);
   //setAxisScale(QwtPlot::xBottom, 1, 4.4e9, 4.4e9 / 5.0);
-  setAxisScale(QwtPlot::yLeft, -135, 20, 20.0);
+  //setAxisScale(QwtPlot::yLeft, -135, 20, 20.0);
+
+  setAxisScale(QwtPlot::yRight, 0, 10, 1);
+  setAxisScale(QwtPlot::xTop, 0, 10, 1);
+  
   repaint();
   replot();
 }
@@ -90,11 +96,11 @@ void SweepInspector::loadSweep(int index) {
   d_curve->attach(this);
 
   QwtInterval frange = data->limits(FREQ);
-  setAxisScale(QwtPlot::xBottom, frange.minValue(), frange.maxValue(), (frange.maxValue() - frange.minValue())/ 5.0);
-  setAxisScale(QwtPlot::yLeft, -135, 20, 10.0);
+  //setAxisScale(QwtPlot::xBottom, frange.minValue(), frange.maxValue(), (frange.maxValue() - frange.minValue())/ 5.0);
+  //setAxisScale(QwtPlot::yLeft, -135, 20, 10.0);
   setTitle( QString("RF Sweep @ %1").arg(data->timestampFromIndex(index)) );
   //set maximum zoom out
-  zoomer->setZoomBase(QRectF(QPointF(frange.minValue(), 20), QPointF(frange.maxValue(), -135)));
+  zoomer->setZoomBase(QRectF(QPointF(frange.minValue(), 40), QPointF(frange.maxValue(), -135)));
   zoomer->zoomBase();
 
   //find max, min, and average values and drop it on plot as well
@@ -106,31 +112,35 @@ void SweepInspector::loadSweep(int index) {
   } avg /= sweep.size();
 
   //add markers onto the plot
-  QwtPlotMarker *minfo, *mmeta;
-  QwtText tinfo = QwtText(QString("Max: %1 dBm\tMin: %2 dBm\tAvg: %3 dBm").arg(max).arg(min).arg(avg));
-  tinfo.setFont( QFont( "Helvetica", 10, QFont::Bold ) );
-  tinfo.setColor( Qt::green );
-  tinfo.setRenderFlags(Qt::AlignBottom | Qt::AlignCenter);
-  minfo = new QwtPlotMarker(tinfo); 
-  minfo->attach(this);
-  minfo->setLabel(tinfo);
-  minfo->setValue(frange.minValue() + (frange.maxValue() - frange.minValue())/2, -135); 
+  QwtPlotMarker *one = new QwtPlotMarker(), *two = new QwtPlotMarker();
+  one->attach(this); one->setAxes(QwtPlot::xTop, QwtPlot::yRight);
+  two->attach(this); two->setAxes(QwtPlot::xTop, QwtPlot::yRight);
 
-  //plot the trace metadata directly on the graph
-  QwtText tmeta(data->plotText());
-  tmeta.setFont( QFont( "Helvetica", 10, QFont::Normal ) );
-  tmeta.setColor( Qt::white );
-  //tmeta.setRenderFlags(Qt::AlignTop | Qt::AlignRight);
-  tmeta.setRenderFlags(Qt::AlignLeft | Qt::AlignBottom);
-  mmeta = new QwtPlotMarker(tmeta);
-  mmeta->attach(this);
-  mmeta->setLabel(tmeta);
-  mmeta->setLabelAlignment(Qt::AlignBottom | Qt::AlignRight);
-  mmeta->setValue(frange.minValue(), 20);
+  QwtText tone = QwtText(QString("Max: %1 dBm\nMin: %2 dBm\nAvg: %3 dBm").arg(max).arg(min).arg(avg));
+  tone.setFont( QFont( "Helvetica", 10, QFont::Bold ) );
+  tone.setColor( Qt::green );
+  tone.setRenderFlags(Qt::AlignTop | Qt::AlignLeft);
+
+  one->setLabel(tone);
+  one->setValue(0, 10);
+  one->setLabelAlignment(Qt::AlignBottom | Qt::AlignRight);
+
+  QwtText ttwo(data->plotText());
+  ttwo.setFont( QFont( "Helvetica", 10, QFont::Bold ) );
+  ttwo.setColor( Qt::white );
+  ttwo.setRenderFlags(Qt::AlignBottom | Qt::AlignRight);
+
+  two->setLabel(ttwo);
+  two->setValue(10, 10);
+  two->setLabelAlignment(Qt::AlignBottom | Qt::AlignLeft);
+
   replot();
   repaint();
 }
 void SweepInspector::save(QString filename) {
   QwtPlotRenderer renderer;
   renderer.exportTo( this, filename);
+}
+void SweepInspector::zoomed(const QRectF &rect) {
+  emit zoominated(rect);
 }

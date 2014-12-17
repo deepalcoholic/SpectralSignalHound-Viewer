@@ -35,11 +35,14 @@ Q_OBJECT
 public:
   ~SweepInspector();
   explicit SweepInspector(QWidget *parent = 0);
-  
   void setpData(QHoundData *);
   void save(QString);
 public slots:
   void loadSweep(int);
+  void zoomed(const QRectF &);
+
+signals:
+  void zoominated(const QRectF &);
 
 private:
   QHoundData * data;

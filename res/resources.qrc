@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
+    <file>resetzoom.png</file>
     <file>manual.png</file>
     <file>sshv.png</file>
     <file>image.png</file>
