@@ -18,7 +18,7 @@ Currently, this only builds on Linux variants, but could work on Windows and OS 
 	
 	git clone --recursive https://github.com/npotts/SpectralSignalHound-Viewer
 	cd SpectralSignalHound-Viewer
-	svn clone svn://svn.code.sf.net/p/qwt/code/trunk/qwt
+	svn checkout svn://svn.code.sf.net/p/qwt/code/trunk/qwt
 	cd qwt && qmake && make #there my be some errors when building Qt Designer components, its a dont care.
 	mkdir build
 	cd build
