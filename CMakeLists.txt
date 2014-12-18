@@ -26,7 +26,7 @@ project(ssh-viewer)
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${STXXL_CXX_FLAGS}") # apply STXXL CXXFLAGS to our configuration
 
 #use our own mirror of a built qwt
-set(QWT_INCLUDE_DIR qwt/include)
+set(QWT_INCLUDE_DIR qwt/src)
 set(QWT_LIBRARY qwt/lib)
 find_package(Qwt REQUIRED) #get Qwt
 find_package(Qt5Widgets REQUIRED) # Find the QtWidgets library
@@ -34,8 +34,10 @@ find_package(Qt5Sql REQUIRED)
 
 LINK_DIRECTORIES(qwt/lib) #somehow I need to explicitly set this
 
-INCLUDE_DIRECTORIES(${INCLUDE_DIRECTORIES} ${CMAKE_SOURCE_DIR})
-INCLUDE_DIRECTORIES(${INCLUDE_DIRECTORIES} ${QWT_INCLUDE_DIR})
+
+
+include_directories(${QWT_INCLUDE_DIR})
+
 
 SET(SRC
 	sources/SHData.cpp sources/SHData.h
