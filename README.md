@@ -59,6 +59,9 @@ Because...  darn it, I like pictures.
 | Ctrl + ?                 | Show manual (this document)             |
 | Ctrl + F1                | Show information about Program          |
 
+#Zooming
+You can zoom in on the plot via Mouse1 click and hold.  This zoom window will be maintained during changes in the sweep index, so that you can effectively zoom in on a range and watch it changes over time.  In order to back out, you can click the __Fix Zoom__ button, which will reset the zoom to the largest view.
+
 # Manual?  We don't need no stinking manual!
 
 Honestly, you should be able to figure it out.  Its not that complicated.
